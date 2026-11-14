@@ -86,3 +86,13 @@ Ouvrir l'URL dans **Safari** → bouton Partager → **Sur l'écran d'accueil** 
   Workflow GitHub « Mise à jour Projets » : automatique à chaque modification de la liste ou d'un périmètre, ou manuel via Run workflow.
 - **Garde-fous** : arrêt si moins de 10 lignes, identifiant en double ou coordonnées hors de Maurice. Les projets sans coordonnées sont listés dans `projets-meta.json`.
 - **Statuts** ramenés à 3 états (livré / en cours / à venir) ; **catégories** : Smart City & quartiers, résidentiel, commerces & bureaux, équipements & loisirs, foncier.
+
+## Hôtels, hébergements et centres commerciaux (v0.6)
+
+- **Script** : `scripts/update_hotels_commerces.py` (Python standard). Source principale : OpenStreetMap.
+- **Listes de référence** (modifiables sur GitHub, relancent la mise à jour) :
+  - `data/sources/centres-commerciaux-reference.csv` : grands centres (opérateur, surface locative, ouverture) + projets et extensions annoncés.
+  - `data/sources/hotels-reference.csv` : hôtels vérifiés (étoiles, chambres, groupe). Vide au départ : à compléter avec la liste officielle de la Tourism Authority ou de l'AHRIM.
+- **Sorties** : `data/hotels.json`, `data/centres-commerciaux.json`, `data/hotels-commerces-meta.json`, table de contrôle `data/sources/hotels-table.csv`.
+- **Workflow** « Mise à jour Hôtels & Commerces » : mensuel (le 3), manuel, ou à chaque modification d'une liste.
+- **Densité d'hébergement touristique** : calculée dans l'application à partir des hébergements (indicateur indirect, fiabilité D). L'ancien fichier `tourisme.json` (fictif) n'est plus utilisé.

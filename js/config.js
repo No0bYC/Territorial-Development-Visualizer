@@ -5,7 +5,7 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.5.0',
+  version: '0.6.0',
 
   /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
      Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
@@ -24,7 +24,7 @@ window.TDV = {
   dataFiles: {
     pop: 'population.json', popMeta: 'population-meta.json', hex: 'potentiel-demo.json', infra: 'infrastructures.json', infraMeta: 'infrastructures-meta.json',
     shops: 'commerces.json', malls: 'centres-commerciaux.json', transport: 'transports.json',
-    projects: 'projets.json', projPerim: 'projets-perimetres.json', projMeta: 'projets-meta.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
+    projects: 'projets.json', projPerim: 'projets-perimetres.json', projMeta: 'projets-meta.json', state: 'terres-etat.json', hotels: 'hotels.json', hcMeta: 'hotels-commerces-meta.json',
     labels: 'localites.json'
   },
 
@@ -83,7 +83,9 @@ window.TDV = {
       note: 'Signal avancé pour l\'immobilier. Liste tenue dans data/sources/equipements-projetes.csv.' },
     { id: 'trans', grp: 'Équipements & services', name: 'Transports', color: 'trans', on: true, fiab: 'F', map: ['metro-line', 'metro-st', 'bus-st'], meta: 'Metro Express, gares routières',
       ui: 'keys', keys: [['fill', 'Metro & stations'], ['ring', 'Gares routières']] },
-    { id: 'mall',  grp: 'Commerce', name: 'Centres commerciaux', color: 'mall', on: false, fiab: 'F', map: ['mall-ext', 'mall-pt'], meta: 'Volumes 3D' },
+    { id: 'mall',  grp: 'Commerce', name: 'Centres commerciaux', color: 'mall', on: false, map: ['mall-ext', 'mall-pt'], meta: 'Contours OSM + grands centres vérifiés',
+      ui: 'chips', field: 'taille', targets: ['mall-ext', 'mall-pt'], options: [['regional', 'Régionaux'], ['quartier', 'De quartier'], ['proximite', 'Proximité']],
+      note: 'Volume = emprise au sol (OpenStreetMap). Point blanc cerclé = projet ou extension annoncé. Liste vérifiée : data/sources/centres-commerciaux-reference.csv.' },
     { id: 'shop',  grp: 'Commerce', name: 'Concentration de commerces', color: 'shop', on: false, fiab: 'F', map: ['shop-heat'], meta: 'Carte de chaleur',
       ui: 'ramp', ramp: ['rgba(255,122,26,.1)', '#FFB27A', '#FF7A1A', '#C2410C'], rampLabels: ['Diffus', 'Dense'] },
     { id: 'proj',  grp: 'Foncier & projets', name: 'Projets des promoteurs', color: 'proj', on: true, map: ['proj-fill', 'proj-vol', 'proj-line', 'proj-pt'], meta: 'Membres et grands groupes',
@@ -92,9 +94,12 @@ window.TDV = {
       cats: [['smart', 'Smart City & quartiers'], ['resid', 'Résidentiel'], ['eco', 'Commerces & bureaux'], ['equip', 'Équipements & loisirs'], ['foncier', 'Foncier']],
       note: 'Liste : data/sources/projets.csv · périmètres : data/sources/perimetres/. Pointillés = périmètre tracé ; point seul = position approximative.' },
     { id: 'state', grp: 'Foncier & projets', name: "Terres de l'État", color: 'state', on: false, fiab: 'F', map: ['state-fill', 'state-line'], meta: 'Dont pas géométriques' },
-    { id: 'tour',  grp: 'Tourisme & loisirs', name: 'Zones touristiques', color: 'tour', on: false, fiab: 'F', map: ['tour-heat', 'hotel-pt'], meta: 'Fréquentation + hôtels',
-      ui: 'ramp', ramp: ['rgba(0,184,217,.1)', '#7FDCEC', '#00B8D9', '#006E82'], rampLabels: ['Faible fréquentation', 'Forte'],
-      note: 'Points foncés : hôtels & resorts (taille = étoiles).' },
+    { id: 'hotel', grp: 'Tourisme & loisirs', name: 'Hôtels & hébergements', color: 'tour', on: false, map: ['hotel-pt'], meta: 'Hôtels, résidences, maisons d\'hôtes',
+      ui: 'hotel', kinds: [['hotel', 'Hôtels'], ['residence', 'Résidences touristiques', false], ['pension', "Maisons d'hôtes", false]],
+      note: 'Point plein = hôtel ; cercle = résidence ; petit point = maison d\'hôtes. Groupe hôtelier détecté par le nom : à confirmer (liste data/sources/hotels-reference.csv).' },
+    { id: 'tour',  grp: 'Tourisme & loisirs', name: 'Densité d\'hébergement touristique', color: 'tour', on: false, fiab: 'D', map: ['tour-heat'], meta: 'Indicateur indirect de fréquentation',
+      ui: 'ramp', ramp: ['rgba(0,184,217,.1)', '#7FDCEC', '#00B8D9', '#006E82'], rampLabels: ['Faible', 'Forte'],
+      note: 'Calculée à partir des hébergements (un hôtel pèse plus qu\'une maison d\'hôtes). Pas de données publiques de fréquentation par zone.' },
     { id: 'terrain', grp: 'Fond de carte', name: 'Relief 3D', color: 'base', on: true, map: [], meta: 'Élévation réelle, exagérée ×1,5' },
     { id: 'base3d', grp: 'Fond de carte', name: 'Bâtiments 3D', color: 'base', on: true, map: ['osm-buildings', 'blocks'], meta: 'OpenStreetMap · zoom rapproché' },
     { id: 'labels', grp: 'Fond de carte', name: 'Noms des localités', color: 'base', on: true, map: [], meta: '' }

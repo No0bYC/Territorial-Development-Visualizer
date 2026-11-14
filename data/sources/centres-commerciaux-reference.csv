@@ -1,0 +1,20 @@
+id,nom,osm_nom,operateur,statut,annee,gla_m2,boutiques,lat,lon,fiabilite,source,source_url,notes
+CC-01,Bagatelle Mall,Bagatelle Mall,Ascencia (Rogers),existant,2011,,200,-20.2246,57.4969,B,Ascencia / L'Express,https://fr.allafrica.com/stories/202511160017.html,"Vaisseau amiral d'Ascencia ; environ 200 enseignes ; record de 1,1 M de visiteurs en période de fêtes"
+CC-02,Phoenix Mall,Phoenix Mall,Ascencia (Rogers),existant,,,,-20.2794,57.4958,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,Station de métro intégrée depuis 2022
+CC-03,Riche Terre Mall,Riche terre mall,Ascencia (Rogers),existant,,,,-20.1294,57.5219,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,Rénovation majeure achevée en 2025
+CC-04,Kendra,Kendra Shopping Mall,Ascencia (Rogers),existant,,,,-20.2261,57.5381,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,Extension de +5 000 m² annoncée
+CC-05,Les Allées d'Helvétia,Les Allées,Ascencia (Rogers),existant,,,,-20.2248,57.5256,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,
+CC-06,Bo'Valon Mall,Bo'Valon Mall,Ascencia (Rogers) + Groupe Beau Vallon,existant,2019,,,-20.4233,57.6978,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,Investissement annoncé d'au moins Rs 650 M
+CC-07,So'flo,So'flo|Soflo,Ascencia (Rogers),existant,2018,,,,,B,Ascencia,https://rogers.diizz.com/segments/rogers-malls,À localiser (absent d'OpenStreetMap)
+CC-08,Cascavelle Shopping Village,Cascavelle Shopping Village,Medine,existant,,30000,,-20.2784,57.4020,B,Medine,https://www.propertycloud.mu/blog/medine-unveils-ambitious-property-development-pipeline,"Extension de 19 500 m² livrée en nov. 2025 (Rs 2,6 Md) ; 1 200 places de parking"
+CC-09,Tribeca Central,Tribeca,,existant,,,,-20.2452,57.4985,C,L'Express,https://fr.allafrica.com/stories/202512220562.html,Centre régional à large zone d'influence
+CC-10,Grand Baie La Croisette,La Croisette,,existant,,,,-20.0212,57.5786,C,OpenStreetMap,,
+CC-11,Mahogany Shopping Promenade,Mahogany Shopping Promenade,Novaterra (Terra),existant,,,,-20.1000,57.5769,C,Novaterra,https://lexpress.mu/article/315037/smart-city-cluster-immobilier-terra-devoile-projets,Beau Plan Smart City
+CC-12,Mont Choisy Mall,Mont Choisy Mall,,existant,,,,-20.0246,57.5765,C,OpenStreetMap,,
+CC-13,La City Trianon,La City Trianon,,existant,,,,-20.2584,57.4904,C,OpenStreetMap,,
+CC-14,Ruisseau Créole,Ruisseau Créole,,existant,,,,-20.3579,57.3687,C,OpenStreetMap,,
+CC-15,Albion Shopping Mall,Albion Shopping Mall|Albion,,existant,2025,14000,40,,,B,L'Express,https://fr.allafrica.com/stories/202511160017.html,14 000 m² au total ; 243 places de parking ; à localiser
+CC-16,Mall de Flacq,,Ascencia + Alteo (Atterbury co-développeur),projete,juil. 2027,25000,,-20.2000,57.7100,D,Ascencia IAR 2026,https://fr.allafrica.com/stories/202611030664.html,"Rs 2,6 Md ; plus de 1 000 emplois ; position approximative"
+CC-17,Bel-Air by Ascencia,,Ascencia + Alteo,projete,exercice 2028,8500,,-20.2550,57.7470,D,Ascencia IAR 2026,https://fr.allafrica.com/stories/202611030664.html,Rs 976 M ; position approximative
+CC-18,Extension de Bagatelle Mall (pôle loisirs),,Ascencia (Rogers),extension,nov. 2026,6000,,-20.2252,57.4962,C,Ascencia IAR 2026,https://fr.allafrica.com/stories/202611030664.html,Rs 472 M ; ancien espace cinéma transformé
+CC-19,Extension de Kendra,,Ascencia (Rogers),extension,,5000,,-20.2266,57.5388,D,L'Express,https://fr.allafrica.com/stories/202512220562.html,Calendrier non publié

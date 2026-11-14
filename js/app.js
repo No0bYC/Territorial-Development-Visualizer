@@ -105,6 +105,13 @@
   const projMatch = (p) => pjSt.has(p.st) && pjCat.has(p.cat) && (pjGrp === 'all' || p.grp.includes(pjGrp));
   const PJ_COL = ['match', ['get', 'st'], 'livre', PJ.status[0][2], 'encours', PJ.status[1][2], PJ.status[2][2]];
 
+  /* Filtres centres commerciaux (taille) et hébergements (type, groupe) */
+  const mallFilter = () => ['in', ['get', 'taille'], ['literal', [...subFilters.mall]]];
+  const HL = CFG.layers.find((l) => l.id === 'hotel');
+  const hKind = new Set(HL.kinds.filter((o) => o[2] !== false).map((o) => o[0]));
+  let hGrp = 'all';
+  const hotelFilter = () => { const f = ['all', ['in', ['get', 'k'], ['literal', [...hKind]]]]; if (hGrp !== 'all') f.push(['==', ['get', 'grp'], hGrp]); return f; };
+
   /* ---------- Carte ---------- */
   const PAD = () => isMobile() ? { top: 90, bottom: 150, left: 0, right: 0 } : { top: 100, bottom: 20, left: 340, right: 70 };
   const map = new maplibregl.Map({
@@ -124,9 +131,9 @@
     const add = (id, data) => map.addSource(id, { type: 'geojson', data });
     add('hex', D.hex); add('pop', D.pop);
     add('infra', D.infra); add('shop', D.shops); add('mall', D.malls);
-    add('trans', D.transport); add('proj', D.projPerim); add('state', D.state); add('tour', D.tourism); add('hotel', D.hotels);
+    add('trans', D.transport); add('proj', D.projPerim); add('state', D.state); add('hotel', D.hotels);
     add('projpt', D.projects);
-    add('mallpt', { type: 'FeatureCollection', features: D.malls.features.map((f) => { const r = f.geometry.coordinates[0]; return { type: 'Feature', geometry: { type: 'Point', coordinates: [(r[0][0] + r[2][0]) / 2, (r[0][1] + r[2][1]) / 2] }, properties: f.properties }; }) });
+    add('mallpt', { type: 'FeatureCollection', features: D.malls.features.map((f) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: f.properties.cx !== undefined ? [f.properties.cx, f.properties.cy] : f.geometry.type === 'Point' ? f.geometry.coordinates : f.geometry.coordinates[0][0] }, properties: f.properties })) });
 
     // motif hachuré pour les terres de l'État
     const cv = document.createElement('canvas'); cv.width = cv.height = 16; const g = cv.getContext('2d');
@@ -173,17 +180,19 @@
     A({ id: 'state-line', type: 'line', source: 'state', layout: hidden, paint: { 'line-color': C.state, 'line-width': 1.4, 'line-dasharray': [2, 1.5] } });
     const zw = (a, b) => ['interpolate', ['linear'], ['zoom'], 9, a, 14, b];
     // cartes de chaleur
-    const heat = (id, src, stops) => A({ id, type: 'heatmap', source: src, layout: hidden, paint: {
+    const heat = (id, src, stops, weight) => A({ id, type: 'heatmap', source: src, layout: hidden, paint: { ...(weight ? { 'heatmap-weight': weight } : {}),
       'heatmap-radius': zw(15, 42), 'heatmap-intensity': zw(.65, 1.45), 'heatmap-opacity': .85,
       'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'], 0, stops[0], .2, stops[1], .52, stops[2], 1, stops[3]] } });
     heat('shop-heat', 'shop', ['rgba(255,122,26,0)', 'rgba(255,178,122,.45)', 'rgba(255,122,26,.75)', '#C2410C']);
-    heat('tour-heat', 'tour', ['rgba(0,184,217,0)', 'rgba(127,220,236,.45)', 'rgba(0,184,217,.75)', '#006E82']);
+    // densité d'hébergement : un hôtel pèse selon ses chambres (sinon 3), une résidence 1, une maison d'hôtes 0,6
+    heat('tour-heat', 'hotel', ['rgba(0,184,217,0)', 'rgba(127,220,236,.45)', 'rgba(0,184,217,.75)', '#006E82'],
+      ['case', ['==', ['get', 'k'], 'hotel'], ['case', ['has', 'chambres'], ['min', 8, ['/', ['to-number', ['get', 'chambres'], 0], 40]], 3], ['==', ['get', 'k'], 'residence'], 1, .6]);
     // transport
     A({ id: 'metro-line', type: 'line', source: 'trans', filter: ['==', ['get', 'kind'], 'metro'], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.trans, 'line-width': zw(2.5, 6) } });
     // volumes 3D
     A({ id: 'pop-ext', type: 'fill-extrusion', source: 'pop', layout: hidden, paint: { 'fill-extrusion-color': rampExpr(metric), 'fill-extrusion-height': heightExpr(metric), 'fill-extrusion-opacity': .8, 'fill-extrusion-vertical-gradient': true } });
     A({ id: 'pop-line', type: 'line', source: 'pop', layout: hidden, paint: { 'line-color': '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 9, .4, 13, 1.2], 'line-opacity': .9 } });
-    A({ id: 'mall-ext', type: 'fill-extrusion', source: 'mall', layout: hidden, paint: { 'fill-extrusion-color': C.mall, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
+    A({ id: 'mall-ext', type: 'fill-extrusion', source: 'mall', layout: hidden, filter: mallFilter(), paint: { 'fill-extrusion-color': C.mall, 'fill-extrusion-height': ['*', ['get', 'h'], 4], 'fill-extrusion-opacity': .9 } });
     // Projets : périmètre tracé = aplat + volume translucide + pointillés
     A({ id: 'proj-fill', type: 'fill', source: 'proj', filter: projFilter(), paint: { 'fill-color': C.proj, 'fill-opacity': .1 } });
     A({ id: 'proj-vol', type: 'fill-extrusion', source: 'proj', filter: projFilter(), paint: { 'fill-extrusion-color': C.proj, 'fill-extrusion-height': 60, 'fill-extrusion-opacity': .18 } });
@@ -201,8 +210,19 @@
         'circle-stroke-width': proj ? 2.5 : ['case', ['==', ['get', 'st'], 'prive'], 2, 1.2],
         'circle-pitch-alignment': 'map' } });
     });
-    circ('mall-pt', 'mallpt', C.mall, 5, { maxzoom: 11 });
-    A({ id: 'hotel-pt', type: 'circle', source: 'hotel', layout: hidden, paint: { 'circle-color': '#006E82', 'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['-', ['get', 'etoiles'], 1], 14, ['*', ['get', 'etoiles'], 2]], 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 } });
+    // centres : taille du point selon la catégorie ; projet/extension = blanc cerclé
+    const mallR = (a, b, c) => ['match', ['get', 'taille'], 'regional', a, 'quartier', b, c];
+    A({ id: 'mall-pt', type: 'circle', source: 'mallpt', layout: hidden, filter: mallFilter(), paint: {
+      'circle-color': ['case', ['==', ['get', 'statut'], 'existant'], C.mall, '#FFFFFF'],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, mallR(6, 4, 2.5), 14, mallR(12, 8, 5)],
+      'circle-stroke-color': ['case', ['==', ['get', 'statut'], 'existant'], '#FFFFFF', C.mall], 'circle-stroke-width': ['case', ['==', ['get', 'statut'], 'existant'], 1.5, 2.5],
+      'circle-opacity': ['interpolate', ['linear'], ['zoom'], 13.5, 1, 15, ['case', ['==', ['get', 'statut'], 'existant'], .25, 1]] } });
+    // hôtels : point plein ; résidences : cercle ; maisons d'hôtes : petit point
+    A({ id: 'hotel-pt', type: 'circle', source: 'hotel', layout: hidden, filter: hotelFilter(), paint: {
+      'circle-color': ['match', ['get', 'k'], 'residence', '#FFFFFF', '#006E82'],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['match', ['get', 'k'], 'hotel', 3.5, 'residence', 2.5, 1.8],
+        14, ['match', ['get', 'k'], 'hotel', ['case', ['has', 'chambres'], ['min', 14, ['+', 6, ['/', ['to-number', ['get', 'chambres'], 0], 40]]], 8], 'residence', 6, 4.5]],
+      'circle-stroke-color': ['match', ['get', 'k'], 'residence', '#006E82', '#FFFFFF'], 'circle-stroke-width': ['match', ['get', 'k'], 'residence', 1.8, 'hotel', 1.5, .8], 'circle-pitch-alignment': 'map' } });
     A({ id: 'bus-st', type: 'circle', source: 'trans', filter: ['==', ['get', 'kind'], 'bus'], paint: { 'circle-color': '#fff', 'circle-radius': zw(3, 7), 'circle-stroke-color': C.trans, 'circle-stroke-width': 2 } });
     A({ id: 'metro-st', type: 'circle', source: 'trans', filter: ['==', ['get', 'kind'], 'station'], paint: { 'circle-color': C.trans, 'circle-radius': zw(3.5, 8), 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 } });
     // Projets : point (plein = livré, clair = en cours, blanc = à venir) ; position approximative (F) = plus transparent
@@ -235,6 +255,14 @@
       const cnt = (v) => l.infra ? D.infra.features.filter((f) => f.properties.g === l.infra && f.properties.s === v).length : null;
       h += `<div class="seg" data-seg="${l.id}">${l.options.map(([v, t, d]) => { const n = cnt(v); return `<button data-v="${v}" class="${d === false ? '' : 'on'}">${t}${n !== null ? ` <small>${n}</small>` : ''}</button>`; }).join('')}</div>`;
       if (l.infra && l.infra !== 'projet') h += `<div class="keys"><span><i style="background:${C[l.color]}"></i>Public</span><span><i style="background:#fff;border:2px solid ${C[l.color]}"></i>Privé</span></div>`;
+    }
+    if (l.ui === 'hotel') {
+      const M = D.hcMeta || {}, F = D.hotels.features, n = (v) => F.filter((f) => f.properties.k === v).length;
+      if (!F.some((f) => f.properties.k)) h += `<div class="note" style="color:#C2410C;margin-bottom:8px">Données en attente : lancez la mise à jour (GitHub → Actions → « Mise à jour Hôtels & Commerces » → Run workflow).</div>`;
+      h += `<div class="note" style="margin:0 0 8px">${F.length} hébergements · ${M.hotels_avec_chambres || 0} avec nombre de chambres${M.updated ? ' · màj ' + new Date(M.updated).toLocaleDateString('fr-FR') : ''} · officiel : 109 hôtels, 14 112 chambres (fin 2025)</div>`;
+      h += `<div class="seg hseg">${l.kinds.map(([v, t, d]) => `<button data-v="${v}" class="${d === false ? '' : 'on'}">${t} <small>${n(v)}</small></button>`).join('')}</div>`;
+      const grps = [...new Set(F.map((f) => f.properties.grp).filter(Boolean))].sort();
+      if (grps.length) h += `<select class="psel" id="hgrp"><option value="all">Tous les groupes hôteliers</option>${grps.map((g) => `<option>${g}</option>`).join('')}</select>`;
     }
     if (l.ui === 'proj') {
       const M = D.projMeta || {}, n = (k, v) => D.projects.features.filter((f) => f.properties[k] === v).length;
@@ -270,6 +298,11 @@
       S.has(v) ? S.delete(v) : S.add(v); b.classList.toggle('on', S.has(v)); applyProj();
     }));
     const sel = $('#pjgrp'); if (sel) sel.onchange = () => { pjGrp = sel.value; applyProj(); };
+    document.querySelectorAll('.hseg').forEach((s) => s.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return; const v = b.dataset.v;
+      hKind.has(v) ? hKind.delete(v) : hKind.add(v); b.classList.toggle('on', hKind.has(v)); map.setFilter('hotel-pt', hotelFilter());
+    }));
+    const hs = $('#hgrp'); if (hs) hs.onchange = () => { hGrp = hs.value; map.setFilter('hotel-pt', hotelFilter()); };
     document.querySelectorAll('.gseg').forEach((s) => s.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       s.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
@@ -340,6 +373,26 @@
     if (/^https?:/.test(p.url)) foot += `<br><a href="${p.url}" target="_blank" rel="noopener">Voir la source</a>`; else if (p.url) foot += `<br>Source : ${p.url}`;
     showInfo(C.proj, 'Projet promoteur · ' + p.type, p.n, m, foot, p.f);
   }
+  const TAILLE = { regional: 'Régional', quartier: 'De quartier', proximite: 'De proximité' };
+  const STAT = { existant: 'Ouvert', projete: 'Projet annoncé', extension: 'Extension annoncée' };
+  const val = (x) => (x === null || x === undefined || x === '' || x === 'null') ? '—' : x;
+  function showMall(p) {
+    const m = [[STAT[p.statut] || p.statut, 'Statut'], [TAILLE[p.taille], 'Catégorie'], [p.gla ? fmt(p.gla) + ' m²' : '—', 'Surface locative (GLA)'],
+      [p.emprise ? fmt(p.emprise) + ' m²' : '—', 'Emprise au sol (OSM)'], [val(p.op), 'Opérateur'], [val(p.boutiques), 'Boutiques'], [val(p.annee), 'Ouverture']];
+    let foot = p.note ? p.note + '<br>' : '';
+    foot += `Source : ${p.src || 'OpenStreetMap'}${p.osm ? ' · réf. OSM ' + p.osm : ''}`;
+    if (/^https?:/.test(p.url || '')) foot += ` · <a href="${p.url}" target="_blank" rel="noopener">voir</a>`;
+    foot += '<br>Catégorie estimée d\'après la surface locative, sinon l\'emprise au sol.';
+    showInfo(C.mall, 'Centre commercial · ' + (TAILLE[p.taille] || ''), p.n, m, foot, p.f);
+  }
+  const KIND_L = { hotel: 'Hôtel', residence: 'Résidence touristique', pension: "Maison d'hôtes" };
+  function showHotel(p) {
+    const m = [[KIND_L[p.k] || '—', 'Type'], [p.etoiles ? '★'.repeat(p.etoiles) : '—', 'Étoiles'], [val(p.chambres), 'Chambres'], [val(p.grp), 'Groupe']];
+    let foot = `Source : ${p.src || 'OpenStreetMap'}${p.osm ? ' · réf. OSM ' + p.osm : ''}${D.hcMeta && D.hcMeta.updated ? ' · màj ' + new Date(D.hcMeta.updated).toLocaleDateString('fr-FR') : ''}`;
+    if (p.grp && p.f === 'C') foot += '<br>Groupe détecté d\'après le nom : à confirmer.';
+    const w = p.web || p.url; if (/^https?:/.test(w || '')) foot += `<br><a href="${w}" target="_blank" rel="noopener">Site / source</a>`;
+    showInfo('#006E82', 'Tourisme · ' + (KIND_L[p.k] || 'Hébergement'), p.n || p.name, m, foot, p.f || 'F');
+  }
   $('#ix').onclick = () => $('#info').classList.remove('show');
   function nearestTown(ll) { let b = null, d = 1e9; D.labels.forEach((l) => { const dd = (l.c[0] - ll.lng) ** 2 + (l.c[1] - ll.lat) ** 2; if (dd < d) { d = dd; b = l.name; } }); return 'Secteur ' + b; }
   function bindClicks() {
@@ -367,8 +420,8 @@
         showInfo(proj ? '#0B0B0C' : C[lyr.color], (proj ? 'Équipement projeté · ' : lyr.name + ' · ') + (LBL[p.s] || p.s), p.n, m, foot, p.f);
       }
       else if (id.startsWith('proj')) showProj(p, id === 'proj-fill');
-      else if (id.startsWith('mall')) showInfo(C.mall, 'Centre commercial', p.name, [[p.boutiques, 'Boutiques'], [p.zone, 'Zone']], '', 'F');
-      else if (id === 'hotel-pt') showInfo('#006E82', 'Hôtel & resort', p.name, [[p.etoiles + '★', 'Catégorie'], [p.chambres, 'Chambres'], [p.occ + ' %', "Taux d'occupation"], [p.zone, 'Zone']], '', 'F');
+      else if (id.startsWith('mall')) showMall(p);
+      else if (id === 'hotel-pt') showHotel(p);
       else if (id === 'metro-st' || id === 'bus-st') showInfo(C.trans, 'Transport', p.name, [[id === 'metro-st' ? 'Metro' : 'Bus', 'Mode']], 'Tracé indicatif, à remplacer par les données officielles', 'F');
       else if (id === 'state-fill') showInfo(C.state, "Terres de l'État", p.name, [[fmt(p.ha) + ' ha', 'Surface'], [p.statut, 'Statut']], 'Source réelle : cadastre (demande officielle)', 'F');
       else if (id === 'pop-ext') {
