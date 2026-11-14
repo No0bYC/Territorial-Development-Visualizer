@@ -5,7 +5,7 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.2.0',
+  version: '0.3.0',
 
   /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
      Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
@@ -22,7 +22,7 @@ window.TDV = {
   /* Fichiers de données (dossier /data). Remplacer un fichier factice
      par un fichier réel au même format suffit à mettre la carte à jour. */
   dataFiles: {
-    hex: 'population.json', infra: 'infrastructures.json', schools: 'ecoles.json', banks: 'banques.json',
+    pop: 'population.json', popMeta: 'population-meta.json', hex: 'potentiel-demo.json', infra: 'infrastructures.json', schools: 'ecoles.json', banks: 'banques.json',
     shops: 'commerces.json', malls: 'centres-commerciaux.json', transport: 'transports.json',
     projects: 'projets.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
     leisure: 'loisirs.json', labels: 'localites.json'
@@ -34,22 +34,26 @@ window.TDV = {
     trans: '#2F80ED', proj: '#FF2D2D', state: '#8E44FF', tour: '#00B8D9', leis: '#7AC943', pot: '#0B0B0C', base: '#9A9AA0'
   },
 
-  /* Indicateurs de la couche Population (propriété du fichier population.json) */
+  /* Indicateurs de la couche Population (propriétés du fichier population.json,
+     produit par scripts/update_population.py — recensement 2022, Statistics Mauritius) */
   metrics: {
-    dens:  { label: 'Densité',        unit: 'hab/km²',         min: 0,  max: 8000, h: 3600 },
-    age:   { label: 'Âge moyen',      unit: 'ans',             min: 28, max: 46,   h: 2600 },
-    emp:   { label: "Taux d'emploi",  unit: '%',               min: 40, max: 78,   h: 2600 },
-    sexr:  { label: 'Ratio H/F',      unit: 'H pour 100 F',    min: 93, max: 103,  h: 2200 },
-    crime: { label: 'Criminalité',    unit: 'faits /1000 hab', min: 4,  max: 65,   h: 2800 }
+    dens:    { label: 'Densité',            unit: 'hab/km²',       min: 0,    max: 5000,  h: 3200 },
+    pop2022: { label: 'Population',         unit: 'habitants',     min: 0,    max: 40000, h: 3200 },
+    growth:  { label: 'Croissance 2011→22', unit: '% par an',      min: -1.5, max: 3,     h: 3200, ramp: ['#C2410C', '#F2B28C', '#EDEDF2', '#9C9CFA', '#2B2BB0'] },
+    age:     { label: 'Âge moyen',          unit: 'ans (estimé)',  min: 34,   max: 44,    h: 2600 },
+    p65:     { label: '65 ans et +',        unit: '% des hab.',    min: 8,    max: 20,    h: 2600 },
+    p014:    { label: 'Moins de 15 ans',    unit: '% des hab.',    min: 10,   max: 25,    h: 2600 },
+    sexr:    { label: 'Ratio H/F',          unit: 'H pour 100 F',  min: 92,   max: 104,   h: 2200 }
   },
   popRamp: ['#E4E4FD', '#9C9CFA', '#5B5BF7', '#2B2BB0', '#14145E'],
 
   /* Couches affichées dans le panneau, dans l'ordre */
   layers: [
-    { id: 'pop',   grp: 'Population', name: 'Population', color: 'pop', on: false, map: ['pop-ext'], meta: 'Recensement · par zone', ui: 'metric' },
+    { id: 'pop',   grp: 'Population', name: 'Population', color: 'pop', on: true, map: ['pop-ext', 'pop-line'], meta: 'Recensement 2022 · données réelles', ui: 'metric',
+      note: "Par village (Village Council Area) et par ville. Emploi et criminalité : pas encore de données publiques à cette échelle." },
     { id: 'pot',   grp: 'Population', name: 'Indice de potentiel immobilier', color: 'pot', on: false, map: ['pot-fill'], meta: 'Analyse · démo',
       ui: 'ramp', ramp: ['#F2F2F2', '#BDBDBD', '#6E6E6E', '#0B0B0C'], rampLabels: ['Faible', 'Fort'],
-      note: 'Score composite fictif (croissance, foncier, accessibilité, demande touristique). Méthodologie à définir.' },
+      note: 'Score composite FICTIF (démo). Méthodologie à définir avant tout calcul.' },
     { id: 'infra', grp: 'Équipements & services', name: 'Infrastructures publiques', color: 'infra', on: false, map: ['infra-pt'], meta: 'Poste, santé, social, parcs',
       ui: 'chips', field: 'type', options: [['poste', 'Poste'], ['hopital', 'Santé'], ['social', 'Centres sociaux'], ['parc', 'Parcs']] },
     { id: 'edu',   grp: 'Équipements & services', name: 'Écoles & éducation', color: 'edu', on: false, map: ['edu-pt'], meta: 'Primaire → supérieur',

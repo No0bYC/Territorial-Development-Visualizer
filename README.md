@@ -2,7 +2,17 @@
 
 Web app (PWA) de carte interactive 3D de Maurice : démographie, équipements, commerces, transports, projets immobiliers, terres de l'État, tourisme, loisirs — en couches superposables.
 
-> **Version 0.2** — fond de carte réel (OpenStreetMap), **couches de données encore factices**. Ne pas utiliser pour une analyse.
+> **Version 0.3** — fond de carte réel (OpenStreetMap) + **couche Population réelle** (recensement 2022). Les autres couches restent **factices**.
+
+## Couche Population — mise à jour
+- **Source** : Statistics Mauritius (recensements 2000, 2011, 2022) via CityPopulation.de ; contours des villages et villes © OpenStreetMap.
+- **Indicateurs** : population, densité, croissance 2011→2022 (%/an), âge moyen (estimé à partir des tranches de 10 ans), part des 65 ans et +, des moins de 15 ans, ratio H/F.
+- **Automatique (gratuit)** : `.github/workflows/update-population.yml` exécute `scripts/update_population.py` le 1er de chaque mois. Si les chiffres changent, le fichier `data/population.json` est commité et Vercel redéploie.
+- **À la demande** : GitHub → onglet **Actions** → « Mise à jour Population » → **Run workflow** (≈ 5 min).
+- **Manuel** : saisir une valeur officielle dans `data/sources/population-overrides.csv` (une ligne par zone, colonnes vides = inchangé), puis relancer le workflow. Ces valeurs sont prioritaires.
+- **Contrôle** : `data/sources/population-table.csv` liste toutes les zones et leurs indicateurs (ouvrable dans Excel).
+- **Garde-fous** : le script s'arrête sans rien modifier si la source change de format (< 100 zones lues) ou si moins de 70 % des zones trouvent leur contour.
+- Si un village manque sur la carte : ajouter la correspondance de nom dans `ALIASES` en tête du script.
 
 ## Fond de carte
 - **Rues, bâtiments, noms de lieux** : OpenStreetMap via [OpenFreeMap](https://openfreemap.org) (gratuit, sans clé ni limite ; style Positron recoloré noir & blanc dans `js/app.js` → `restyle`). Attribution OpenStreetMap obligatoire, affichée en bas à droite.

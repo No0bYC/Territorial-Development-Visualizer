@@ -1,6 +1,6 @@
 /* TDV — service worker : met l'application en cache pour un lancement rapide et hors-ligne.
    À chaque mise en ligne d'une nouvelle version, incrémenter VERSION. */
-const VERSION = 'tdv-v0.2.0';
+const VERSION = 'tdv-v0.3.0';
 const SHELL = ['/', '/index.html', '/css/app.css', '/js/config.js', '/js/app.js', '/vendor/maplibre-gl.js', '/vendor/maplibre-gl.css',
   '/manifest.webmanifest', '/icons/apple-touch-icon.png', '/icons/icon-192.png', '/icons/favicon.svg'];
 

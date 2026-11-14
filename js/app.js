@@ -76,8 +76,11 @@
 
   /* ---------- Indicateurs population ---------- */
   let metric = 'dens';
-  const rampExpr = (m) => { const M = CFG.metrics[m], s = (M.max - M.min) / 4; return ['interpolate', ['linear'], ['get', m], ...CFG.popRamp.flatMap((c, i) => [M.min + s * i, c])]; };
-  const heightExpr = (m) => { const M = CFG.metrics[m]; return ['interpolate', ['linear'], ['get', m], M.min, 40, M.max, M.h]; };
+  const rampOf = (m) => CFG.metrics[m].ramp || CFG.popRamp;
+  const rampExpr = (m) => { const M = CFG.metrics[m], s = (M.max - M.min) / 4;
+    return ['case', ['==', ['typeof', ['get', m]], 'number'], ['interpolate', ['linear'], ['get', m], ...rampOf(m).flatMap((c, i) => [M.min + s * i, c])], '#D9D9DD']; };
+  const heightExpr = (m) => { const M = CFG.metrics[m];
+    return ['case', ['==', ['typeof', ['get', m]], 'number'], ['interpolate', ['linear'], ['get', m], M.min, 30, M.max, M.h], 20]; };
   const subFilters = {};
   CFG.layers.forEach((l) => { if (l.ui === 'chips') subFilters[l.id] = new Set(l.options.map((o) => o[0])); });
 
@@ -98,7 +101,7 @@
 
   map.on('load', () => {
     const add = (id, data) => map.addSource(id, { type: 'geojson', data });
-    add('hex', D.hex);
+    add('hex', D.hex); add('pop', D.pop);
     add('infra', D.infra); add('edu', D.schools); add('bank', D.banks); add('shop', D.shops); add('mall', D.malls);
     add('trans', D.transport); add('proj', D.projects); add('state', D.state); add('tour', D.tourism); add('hotel', D.hotels); add('leis', D.leisure);
     add('projpt', { type: 'FeatureCollection', features: D.projects.features.map((f) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [f.properties.cx, f.properties.cy] }, properties: f.properties })) });
@@ -159,7 +162,8 @@
     // transport
     A({ id: 'metro-line', type: 'line', source: 'trans', filter: ['==', ['get', 'kind'], 'metro'], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.trans, 'line-width': zw(2.5, 6) } });
     // volumes 3D
-    A({ id: 'pop-ext', type: 'fill-extrusion', source: 'hex', layout: hidden, paint: { 'fill-extrusion-color': rampExpr(metric), 'fill-extrusion-height': heightExpr(metric), 'fill-extrusion-opacity': .82, 'fill-extrusion-vertical-gradient': true } });
+    A({ id: 'pop-ext', type: 'fill-extrusion', source: 'pop', layout: hidden, paint: { 'fill-extrusion-color': rampExpr(metric), 'fill-extrusion-height': heightExpr(metric), 'fill-extrusion-opacity': .8, 'fill-extrusion-vertical-gradient': true } });
+    A({ id: 'pop-line', type: 'line', source: 'pop', layout: hidden, paint: { 'line-color': '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 9, .4, 13, 1.2], 'line-opacity': .9 } });
     A({ id: 'mall-ext', type: 'fill-extrusion', source: 'mall', layout: hidden, paint: { 'fill-extrusion-color': C.mall, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
     const projColor = ['match', ['get', 'status'], 'Livré', '#FF2D2D', 'En cours', '#FF6B57', '#FFB0A3'];
     A({ id: 'proj-ext', type: 'fill-extrusion', source: 'proj', paint: { 'fill-extrusion-color': projColor, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
@@ -188,6 +192,8 @@
   function subHTML(l) {
     let h = '';
     if (l.ui === 'metric') {
+      if (!D.pop.features.length) h += `<div class="note" style="color:#C2410C;margin-bottom:8px">Données en attente : lancez la mise à jour (GitHub → Actions → « Mise à jour Population » → Run workflow).</div>`;
+      else h += `<div class="note" style="margin:0 0 8px">${D.pop.features.length} zones · recensement 2022${D.popMeta && D.popMeta.updated ? ' · màj ' + new Date(D.popMeta.updated).toLocaleDateString('fr-FR') : ''}</div>`;
       h += `<div class="seg" data-seg="metric">${Object.entries(CFG.metrics).map(([k, v]) => `<button data-v="${k}" class="${k === metric ? 'on' : ''}">${v.label}</button>`).join('')}</div>
         <div class="ramp" id="pramp"></div><div class="rl"><span id="pmin"></span><span id="punit"></span><span id="pmax"></span></div>
         <div class="note">Hauteur et couleur des colonnes = indicateur sélectionné.</div>`;
@@ -235,7 +241,7 @@
   }
   function updRamp() {
     const M = CFG.metrics[metric], r = $('#pramp'); if (!r) return;
-    r.style.background = `linear-gradient(90deg,${CFG.popRamp.join(',')})`;
+    r.style.background = `linear-gradient(90deg,${rampOf(metric).join(',')})`;
     $('#pmin').textContent = M.min; $('#pmax').textContent = M.max; $('#punit').textContent = M.unit;
   }
   $('#reset').onclick = (e) => { e.stopPropagation(); CFG.layers.forEach((l) => { if (l.grp !== 'Fond de carte') { l.on = false; $('#ly-' + l.id).classList.remove('on'); } }); applyAll(); };
@@ -253,6 +259,7 @@
   function nearestTown(ll) { let b = null, d = 1e9; D.labels.forEach((l) => { const dd = (l.c[0] - ll.lng) ** 2 + (l.c[1] - ll.lat) ** 2; if (dd < d) { d = dd; b = l.name; } }); return 'Secteur ' + b; }
   function bindClicks() {
     const order = ['proj-ext', 'proj-pt', 'mall-ext', 'mall-pt', 'hotel-pt', 'metro-st', 'bus-st', 'infra-pt', 'edu-pt', 'bank-pt', 'state-fill', 'leis-fill', 'pop-ext', 'pot-fill'];
+    // (la couche pop-line n'est pas cliquable : c'est le contour)
     map.on('click', (e) => {
       const fs = map.queryRenderedFeatures(e.point, { layers: order.filter((x) => map.getLayer(x) && map.getLayoutProperty(x, 'visibility') !== 'none') });
       if (!fs.length) { $('#info').classList.remove('show'); return; }
@@ -266,7 +273,14 @@
       else if (id === 'bank-pt') showInfo(C.bank, 'Banque', p.name, [[p.type, 'Type'], [p.zone, 'Zone']], 'Donnée fictive');
       else if (id === 'state-fill') showInfo(C.state, "Terres de l'État", p.name, [[fmt(p.ha) + ' ha', 'Surface'], [p.statut, 'Statut']], 'Donnée fictive — source réelle : cadastre (demande officielle)');
       else if (id === 'leis-fill') showInfo('#4E8F1E', 'Zone de loisirs', p.name, [[p.type, 'Type']], 'Donnée fictive');
-      else showInfo(C.pop, 'Zone de recensement', nearestTown(e.lngLat), [[fmt(p.dens), 'hab/km²'], [p.age + ' ans', 'Âge moyen'], [p.emp + ' %', "Taux d'emploi"], [p.sexr, 'H pour 100 F'], [p.crime, 'Faits /1000 hab'], [p.pot + '/100', 'Potentiel (démo)']], 'Cellule ~1,5 km² · données fictives');
+      else if (id === 'pop-ext') {
+        const v = (x, suf = '') => (x === null || x === undefined || x === 'null') ? '—' : fmt(x) + suf;
+        const sign = (x) => (x === null || x === undefined) ? '—' : (x > 0 ? '+' : '') + String(x).replace('.', ',') + ' %';
+        showInfo(C.pop, p.status || 'Zone', p.name, [[v(p.pop2022), 'Habitants (2022)'], [sign(p.growth_pct), 'Évolution 2011→2022'], [v(p.dens), 'hab/km²'], [v(p.age, ' ans'), 'Âge moyen (estimé)'],
+          [v(p.p65, ' %'), '65 ans et +'], [v(p.p014, ' %'), 'Moins de 15 ans'], [v(p.sexr), 'Hommes pour 100 F'], [v(p.pop2011), 'Habitants (2011)']],
+          `Recensement 2022 · Statistics Mauritius via CityPopulation.de · contours © OpenStreetMap${D.popMeta ? ' · mis à jour le ' + new Date(D.popMeta.updated).toLocaleDateString('fr-FR') : ''}${p.override ? ' · correction : ' + p.override : ''}`);
+      }
+      else showInfo('#0B0B0C', 'Indice de potentiel (démo)', nearestTown(e.lngLat), [[p.pot + '/100', 'Score fictif']], 'Donnée fictive — méthodologie à définir');
     });
     order.forEach((x) => { map.on('mouseenter', x, () => (map.getCanvas().style.cursor = 'pointer')); map.on('mouseleave', x, () => (map.getCanvas().style.cursor = '')); });
   }
