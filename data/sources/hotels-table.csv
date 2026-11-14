@@ -1,0 +1,731 @@
+type,nom,groupe,etoiles,chambres,lat,lon,fiabilite,osm
+hotel,3ds,,,,-20.41677,57.705269,C,node/2602743165
+hotel,Alalila Trou aux Biches,,,,-20.040681,57.542209,C,node/14228431912
+hotel,Ambre Sun Hotel Mauritius,Sunlife,,,-20.20475,57.787171,C,way/663249387
+hotel,Anahita The Bay Club hotel - Reception,,,,-20.278197,57.788212,C,node/14103559401
+hotel,Andrea Lodge,,,,-20.518136,57.552015,C,way/207216767
+hotel,Anelia Villas & Spa,,4,150,-20.272231,57.371475,C,node/828423060
+hotel,Anillah appartements,,,18,-20.216235,57.74076,C,node/12409058412
+hotel,Appartement Cosy Vue sur Mer,,,,-20.281333,57.366819,C,node/13533601806
+hotel,Astroea Hotel,,,,-20.436902,57.726423,C,node/10174723717
+hotel,Baystone Hotel,,,,-20.006504,57.570109,C,node/2153001664
+hotel,Be Cosy Aparthotel,,,,-20.036556,57.545862,C,way/1331342056
+hotel,Beach Club,,,,-19.993185,57.591737,C,node/2153015988
+hotel,Beach Villas,,,,-20.021628,57.55337,C,node/2135131888
+hotel,Bel Azur,,,,-20.046406,57.530953,C,node/2135157898
+hotel,Belle Crique Beach Apartments,,,,-20.340982,57.363583,C,node/2166794226
+hotel,Belle Mare Plage,Constance,,,-20.167608,57.766186,C,node/2132056877
+hotel,Blue Paradise villa,,,,-20.441637,57.712316,C,node/11598715580
+hotel,Blue Villa Trou aux Biches,,,,-20.02655,57.55029,C,node/12867124101
+hotel,Bois Bleu Bed & Breakfast,,,,-20.335175,57.372947,C,node/14228430006
+hotel,Bon Azur,,,,-20.046255,57.531396,C,node/2135158076
+hotel,C Beach Club,,,,-20.505352,57.407837,C,node/2278699320
+hotel,Cape Bay,,,,-19.9869,57.605221,C,node/2169076633
+hotel,Cape Garden,,,,-19.986756,57.607326,C,node/2169075948
+hotel,Casa Florida,,,,-19.99168,57.594593,C,node/2336663045
+hotel,ClubMed,Club Med,,,-20.218453,57.396618,C,way/420272219
+hotel,Constance Belle Mare Plage Mauritius,Constance,,,-20.166193,57.765766,C,way/1410953799
+hotel,Constance Le Chaland,Constance,,,-20.451008,57.699673,C,way/1129337479
+hotel,Coral Azur Beach Ressort,,,,-20.022465,57.552224,C,node/12877106501
+hotel,Cozi Apartments,,,,-20.363207,57.375301,C,node/4665498989
+hotel,De Conti,,,,-20.058458,57.522874,C,node/2753216695
+hotel,Dinarobin Hotel & Spa,Beachcomber,,,-20.450119,57.314975,C,node/2163827430
+hotel,Dodo la lodge,,,,-19.995466,57.590773,C,node/2129492866
+hotel,Domaine de Grand Baie,,,,-20.023704,57.574363,C,way/1092193974
+hotel,Domaine des 7 cascades,,,,-20.360644,57.469103,C,node/7012393788
+hotel,Domaine des Alizées,,,,-20.009776,57.600519,C,node/2153350520
+hotel,Dzama hotel,,,25,-20.016314,57.583503,C,node/4876370106
+hotel,El Monaco,,,,-20.269233,57.475642,C,way/1006710079
+hotel,Elysee Hotel Residence,,,,-20.041867,57.540948,C,node/4603523015
+hotel,Etoile de Mahe Hotel,,,,-20.289612,57.36381,C,node/4151568697
+hotel,Explora Prestige,,,,-20.441851,57.71214,C,node/11598715579
+hotel,Flora Bay Appart-Hotel,,,,-20.009723,57.586158,C,node/4604011090
+hotel,Flowers of Paradise,,,,-19.994836,57.59212,C,node/4605165025
+hotel,Four Seasons,Four Seasons,,,-20.286162,57.791273,C,relation/5336332
+hotel,Four Seasons Anahita Golf Resort,Four Seasons,,,-20.277691,57.788131,C,node/2623300924
+hotel,Friday Attidude,Attitude,,,-20.232468,57.803855,C,node/2132072743
+hotel,GoSun Beach Residence,,3,,-20.286233,57.364497,C,way/508897404
+hotel,Gold Crest Hotel,,,,-20.265824,57.479623,C,relation/18269362
+hotel,Grand Bay Suites,,,,-20.005076,57.581836,C,node/2153352103
+hotel,Grand Bel Air,,,,-20.408946,57.692364,C,way/508470766
+hotel,Happy Days Guest House,,,,-20.428719,57.361152,C,node/10889701665
+hotel,Hennessy Park Hotel,Indigo Hotels,,,-20.242562,57.489787,C,way/361459655
+hotel,Hennessy Park Hotel,Indigo Hotels,,,-20.242639,57.489695,C,way/741845876
+hotel,Here Paradise,,,,-20.442565,57.716195,C,node/4612441516
+hotel,Hibiscus,,,,-19.995129,57.589409,C,node/1968408796
+hotel,Hidden beaches in Grand Gaube,,,,-20.000686,57.662533,C,node/7133759714
+hotel,Hilton Mauritius Resort & Spa,Hilton,5,193,-20.308711,57.367255,C,way/125736593
+hotel,Holiday Inn,IHG,,,-20.440613,57.671486,C,way/424736200
+hotel,Hollywood Holidays,,,13,-20.141666,57.739027,C,way/679643343
+hotel,Horisun,,,,-20.203561,57.772784,C,way/440193455
+hotel,Horisun,,,,-20.204405,57.774535,C,way/663255245
+hotel,Hotel 20 degres sud,,,,-20.005315,57.570902,C,node/2153001743
+hotel,Hotel Casuarina,,,,-20.027324,57.548854,C,node/2135140487
+hotel,Hotel Coin de Mire Attitude,Attitude,,,-19.986214,57.606646,C,node/2586865707
+hotel,Hotel Coral Azur,,,,-20.023332,57.552502,C,node/2135132761
+hotel,Hotel Gold Beach,,,,-20.294332,57.363329,C,way/543663626
+hotel,Hotel Heritage Awali,Heritage / Veranda (Rogers),,,-20.508518,57.412971,C,node/2160714856
+hotel,Hotel Heritage Le Telfair,Heritage / Veranda (Rogers),,,-20.505804,57.41046,C,node/2160715027
+hotel,Hotel Le Cannonier,,,,-20.002138,57.553287,C,node/1639537382
+hotel,Hotel Le Cardinal,,,,-20.026759,57.548393,C,node/2135140010
+hotel,Hotel Le Mauricia,Beachcomber,,,-20.009198,57.580297,C,way/117441753
+hotel,Hotel Le Palmiste,,,,-20.037342,57.545403,C,node/2170414107
+hotel,Hotel Le Paradis,,5,,-20.438381,57.320694,C,way/126471815
+hotel,Hotel Les Cocotiers,,,,-20.110758,57.506906,C,node/2162692633
+hotel,Hotel Lux*,LUX Collective,5,,-20.457056,57.311726,C,node/638323425
+hotel,Hotel Lux- Grand Gaube,LUX Collective,,,-20.002403,57.659701,C,node/2169053659
+hotel,Hotel Manisa,,,,-20.28475,57.364736,C,node/1879343499
+hotel,Hotel Margarita,,,,-20.066419,57.521318,C,node/2157558262
+hotel,Hotel Paradise Cove,Attitude,,,-19.988482,57.632446,C,node/2169067649
+hotel,Hotel Recif Attitude,Attitude,,,-20.055447,57.522122,C,node/2157559533
+hotel,Hotel Riu Palace Mauritius,,4,,-20.466606,57.311397,C,way/1445728710
+hotel,Hotel Riu Turquoise,,4,,-20.466842,57.315084,C,way/1445713450
+hotel,Hotel Royal Palm,Beachcomber,,,-20.006385,57.579096,C,node/2132529124
+hotel,Hotel Shanti Maurice,,,,-20.512361,57.473251,C,node/2160651415
+hotel,Hotel SkylineInn,,,,-20.512784,57.495032,C,node/7080221291
+hotel,Hotel Sofitel So Mauritius Bel Ombre,Accor,,,-20.503856,57.435789,C,node/2163875146
+hotel,Hotel Sunrise Attitude,Attitude,4,,-20.189212,57.77314,C,way/189361122
+hotel,Hotel Tamarin,,,,-20.327064,57.377847,C,node/1618012288
+hotel,Hotel Tamassa Bel Ombre,LUX Collective,,,-20.508638,57.416082,C,node/2160715617
+hotel,Hotel Tarisa,,,,-20.020784,57.555745,C,node/2169108707
+hotel,Hotel Ventura,,,,-20.003742,57.581587,C,way/495848223
+hotel,Hotel Veranda - Grand Baie,Heritage / Veranda (Rogers),,,-20.008667,57.578927,C,node/2169094279
+hotel,Hotel Veranda Paul & Verginie,Heritage / Veranda (Rogers),,,-20.006746,57.668054,C,node/2169053660
+hotel,Hotel Villa Kissen,,,,-20.037694,57.545858,C,node/5647958240
+hotel,Hotel Villas Mon Plaisir,,,,-20.066456,57.519198,C,node/2170429268
+hotel,Hotel Voila,,,,-20.223535,57.495283,C,way/208171768
+hotel,Hotel des 2 Mondes,,,,-20.020564,57.557627,C,node/2135130120
+hotel,Hôtel (sans nom),,,,-20.110784,57.506546,C,node/9963866319
+hotel,Hôtel (sans nom),,,,-20.166872,57.491997,C,node/9963868317
+hotel,Hôtel (sans nom),,,,-20.110789,57.506598,C,node/9963868417
+hotel,Hôtel (sans nom),,,,-20.172096,57.769692,C,node/10581038481
+hotel,Hôtel (sans nom),,,,-20.020711,57.555813,C,way/1095640791
+hotel,Hôtel (sans nom),,,,-20.517294,57.492233,C,way/1111657529
+hotel,Hôtel (sans nom),,,,-20.075454,57.513009,C,way/1111911219
+hotel,Hôtel (sans nom),,,,-20.441945,57.71214,C,way/1308843761
+hotel,Hôtel (sans nom),,,,-20.441518,57.712388,C,way/1308843763
+hotel,Hôtel (sans nom),,,,-20.442046,57.713546,C,way/1308843768
+hotel,Hôtel (sans nom),,,,-20.424626,57.701775,C,way/1309435171
+hotel,Hôtel (sans nom),,,,-20.439912,57.397794,C,way/1365221713
+hotel,Hôtel (sans nom),,,,-20.02097,57.555484,C,way/1367183366
+hotel,Hôtel Bella Vista,,,,-20.015186,57.581192,C,node/5184660121
+hotel,Hôtel C Mauritius,Heritage / Veranda (Rogers),,,-20.211986,57.791604,C,node/4610124034
+hotel,InterContinental Hotel,IHG,,,-20.093585,57.509393,C,node/528903259
+hotel,JW Marriott Mauritius Resort,Marriott,,,-20.460676,57.310282,C,node/12486612302
+hotel,Jalsa Beach Hotel & Spa,,,,-20.140986,57.74862,C,way/679643355
+hotel,La Bella Vista,,,,-20.056301,57.522002,C,way/1098607040
+hotel,La Maison D'Ete,,,,-20.117846,57.752004,C,node/2305542778
+hotel,La Mariposa,,,,-20.356331,57.363054,C,node/1808440936
+hotel,La Mariposa,,,,-20.35625,57.363218,C,way/742178452
+hotel,La Mivoie Complex A2 appartment,,,,-20.36603,57.371987,C,node/5637537898
+hotel,La Mivoie by Horizon Holidays,,,,-20.365863,57.372001,C,node/12237821153
+hotel,La Pirogue,Sunlife,,,-20.298693,57.364394,C,way/543663630
+hotel,La Résidence Hotel,,,,-20.010293,57.584077,C,node/5586025664
+hotel,"La Vieille Cheminée, Reception",,,,-20.439996,57.397734,C,node/4537617391
+hotel,Labourdonnais Waterfront Hotel,Indigo Hotels,,,-20.160323,57.497644,C,node/821712205
+hotel,Lagoon Attitude,Attitude,,,-19.994508,57.636321,C,way/607155896
+hotel,Lakaz Chamarel,,,,-20.427109,57.385946,C,node/2437119186
+hotel,Landmark City Hotel,,,,-20.262879,57.481763,C,way/510506227
+hotel,Le Cerisier,,,,-20.024481,57.55144,C,node/2135133913
+hotel,Le Champ De Mars Hotel,,,,-20.169762,57.50911,C,way/510010521
+hotel,Le Clos des Bains,,,,-20.441929,57.711887,C,node/11598715578
+hotel,Le Clos des Bains Spa,,,,-20.441994,57.711872,C,way/1308843760
+hotel,Le Grand Bleu,,,,-20.026193,57.550929,C,node/4603528833
+hotel,Le Grand Cacatoie,,,,-20.441415,57.714968,C,node/11598715583
+hotel,Le Jadis Beach Resort & Wellness Mauritius,,,,-20.100224,57.513501,C,way/450616415
+hotel,Le Jardin de Beau Vallon,,,,-20.42456,57.701766,C,node/10107011428
+hotel,Le Lataniers Bleue,,,,-20.348333,57.363864,C,way/509023537
+hotel,Le Meridien Hotel,Marriott,,,-20.070723,57.516565,C,node/2157554254
+hotel,Le Palmier,,,,-20.26903,57.491024,C,node/4613689269
+hotel,Le Peninsula Bay Beach Resort,,,,-20.445116,57.717459,C,way/1104783727
+hotel,Le Prince Maurice,Constance,,,-20.149253,57.746604,C,node/2132034036
+hotel,Le Sakoa,,,,-20.037811,57.54399,C,node/2135148866
+hotel,Le Secret de Jasmin,,,,-20.002664,57.606461,C,node/5630024844
+hotel,Le Suffren Hotel & Marina,Indigo Hotels,,113,-20.160455,57.495392,C,way/158643290
+hotel,Le Suffren Hotel & Marina,Indigo Hotels,,,-20.15955,57.495358,C,way/779577466
+hotel,Le Suffren Hotel & Marina - Spa & Gym,Indigo Hotels,,,-20.1598,57.495089,C,way/779576768
+hotel,Le Surcouf,,,,-20.215433,57.793199,C,node/2132071744
+hotel,Le Touessrok,Sunlife,,,-20.25208,57.797108,C,node/281956096
+hotel,Le Victoria Hotel,,,,-20.075771,57.513108,C,node/1747415110
+hotel,Leora Beach Apartments,,,,-20.340187,57.364023,C,node/2162911185
+hotel,Les Aigrettes,,,,-20.411432,57.710101,C,node/4612233336
+hotel,Longbeach,,,,-20.172732,57.769431,C,way/725383728
+hotel,Lux Belle Mare,LUX Collective,,,-20.199766,57.781867,C,way/312032654
+hotel,Luxury Tropical Villa,,,,-19.990731,57.600204,C,node/7229686685
+hotel,Maison Du Nord,,,,-20.008827,57.566293,C,way/1446638907
+hotel,Mandrinette Villa,,,,-20.442056,57.713696,C,node/11598715581
+hotel,Maradiva,,,,-20.315046,57.369271,C,way/478910634
+hotel,Marisa Residences,,,,-20.426767,57.363247,C,node/2915737928
+hotel,Maritim Resort & Spa Mauritius,,,,-20.086793,57.51652,C,node/12018514182
+hotel,Marlin Creek Residence,,,,-20.36314,57.372747,C,way/1320663653
+hotel,Marlin Creek;Dauphin Bleu,,,,-20.363152,57.372791,C,node/2306687004
+hotel,Mont Choisy Beach Resort,,,,-20.02119,57.553989,C,way/381764449
+hotel,Mum's Home,,,,-20.18381,57.546236,C,node/4564687094
+hotel,Mystik Lifestyle Boutique Hotel,,,,-20.021001,57.554073,C,way/381764450
+hotel,Navani Villas,,,,-20.001952,57.583183,C,node/8925562008
+hotel,OUTRIGGER Mauritius Beach Resort,,,181,-20.510709,57.417458,C,node/2160710582
+hotel,Ocean Beauty,,,,-19.992506,57.59203,C,node/2169081651
+hotel,Ocean V Hotel,,,,-19.996305,57.588081,C,way/1098360457
+hotel,Ocean Villas,,,,-20.011725,57.565636,C,node/2153370370
+hotel,Otentic Eco Tent Experience,,,,-20.287391,57.777203,C,node/3783767982
+hotel,Palais Hans,,,,-20.166923,57.481374,C,node/4837979221
+hotel,Palmeraie Beach,,,,-20.206045,57.789809,C,node/2132068071
+hotel,Palms Hotel,,,,-20.264569,57.480454,C,way/510530201
+hotel,Paradise Point Villa,Beachcomber,,,-19.997235,57.653541,C,node/7133731165
+hotel,Pearle Beach Hotel,,,,-20.293611,57.363703,C,way/543663624
+hotel,Pensionnat Acacias,,,,-20.254373,57.465313,C,node/4303999930
+hotel,Pensionnat Sunshine,,,,-20.24382,57.472857,C,node/4304581392
+hotel,Pereybere beach Apartments,,,,-19.994661,57.591354,C,node/4237178549
+hotel,Pingo Premium,,,,-20.43413,57.355367,C,node/13394768501
+hotel,Plage Bleue,,,,-20.046548,57.530537,C,node/2135157834
+hotel,Preskil Island Resort,Beau Vallon,4,214,-20.422321,57.722085,C,node/440650863
+hotel,Radisson,Radisson,,,-20.209031,57.789802,C,way/1315478000
+hotel,Radisson Blu Azuri Resort & Spa,Radisson,,,-20.094082,57.708703,C,node/4597740855
+hotel,Radisson Blu Poste Lafayette Resort & Spa Mauritius,Radisson,,,-20.113461,57.749515,C,way/891407822
+hotel,Rayan Tourist Villa,,,,-20.277059,57.372299,C,node/11299405571
+hotel,Recidence Ticoco,,,,-20.014926,57.571783,C,node/10734185357
+hotel,Residence Les Flamands,,,,-19.995788,57.600786,C,node/5623646892
+hotel,Royal Green Wellness Resort,,,,-20.234451,57.50385,C,way/1167389292
+hotel,Rusty Pelican,,,,-20.425411,57.364134,C,node/5025690623
+hotel,Résidence La Plage,,,,-20.289834,57.363862,C,way/508897406
+hotel,Résidence La Plage,,,,-20.289832,57.364009,C,way/777416758
+hotel,Résidence La Plage,,,,-20.289827,57.364149,C,way/777416759
+hotel,Résidence La Plage,,,,-20.289828,57.364278,C,way/777416760
+hotel,Résidence La Plage,,,,-20.290122,57.364025,C,way/777416761
+hotel,Safari,,,,-20.016555,57.582345,C,node/5588717449
+hotel,Saint Geran,One&Only,,,-20.16089,57.757425,C,node/2132054832
+hotel,Salt of palmar,LUX Collective,,,-20.205979,57.789651,C,node/9380693763
+hotel,Sands,,,,-20.316597,57.372251,C,way/478910771
+hotel,Seapoint Boutique Hotel,,,,-20.001722,57.554405,C,node/4458641489
+hotel,Seasense Botoque & Spa,,,,-20.215404,57.793835,C,node/6259484787
+hotel,Seastar,,,,-20.279302,57.36943,C,way/508866264
+hotel,Secret Escape,,,,-20.434984,57.664393,C,node/4753148624
+hotel,Shandrani Beachcomber Resort & Spa,Beachcomber,,,-20.447281,57.705227,C,way/1459549400
+hotel,Shandrani Resort & Spa,Beachcomber,,,-20.445765,57.704544,C,node/2150089035
+hotel,Shant Ghar Guest House,,,,-20.335175,57.378496,C,node/13274018202
+hotel,Silver Beach,,,,-20.233076,57.803359,C,node/2132074055
+hotel,Silver Palm,,,,-19.990585,57.597144,C,node/5623646889
+hotel,Sofitel Mauritius L’Impérial,Accor,,,-20.311841,57.368177,C,way/478910381
+hotel,Solana Beach Hotel,Beau Vallon,,,-20.176581,57.770813,C,node/2132059639
+hotel,Sous Le Badamier,,,,-20.009669,57.566727,C,node/4603703825
+hotel,St. George Hotel,,,,-20.166458,57.501354,C,way/495716781
+hotel,St. Regis Mauritius Resort,Marriott,,,-20.461076,57.310308,C,node/2163821188
+hotel,Stella Rina Adults Only,,,,-20.017198,57.569853,C,node/13133096102
+hotel,Stylia Villas,,,,-20.2341,57.802761,C,node/4109918097
+hotel,Sugar Beach Resort Mauritius,Sunlife,,238,-20.304023,57.365898,C,way/543663631
+hotel,Sunshine Paradise Hotel,,,,-20.041548,57.541946,C,way/1327847313
+hotel,Tamarina Golf & Spa Hotel,,,,-20.321423,57.379212,C,node/2166797473
+hotel,Tamassa Resort,LUX Collective,,,-20.508643,57.416101,C,way/387884642
+hotel,The Address Boutique Hotel,Indigo Hotels,,,-20.110929,57.524223,C,way/371129270
+hotel,The Bay Hotel,,,,-20.351448,57.362131,C,node/2173200206
+hotel,The Oberoi Hotel,Oberoi,,,-20.081548,57.512832,C,node/1747416090
+hotel,The Ravenala Attitude Hotel,Attitude,,,-20.083563,57.516798,C,node/12018877839
+hotel,The Residence Mauritius,,,,-20.197746,57.780055,C,way/663245265
+hotel,"The Westin Turtle Bay Resort & Spa, Mauritius",Marriott,,,-20.090966,57.510532,C,node/528903250
+hotel,Tropical Attitude Hotel,Attitude,,,-20.237256,57.799771,C,node/2191992061
+hotel,Trou aux Biches Resort & Spa,Beachcomber,5,333,-20.031356,57.546779,C,way/238467929
+hotel,Veranda Palmar Beach,Heritage / Veranda (Rogers),,,-20.200959,57.783022,C,way/663249384
+hotel,Veranda Pointe aux Biches,Heritage / Veranda (Rogers),,,-20.046439,57.529392,C,way/1343011030
+hotel,Villa Athena,,,,-20.001865,57.605697,C,node/2153351180
+hotel,Villa Blue Lagoon,,,,-20.112112,57.748813,C,node/6260322185
+hotel,Villa Le Jade Bleu,,,,-20.241791,57.477176,C,node/4302808790
+hotel,Villa Narmada,,,,-20.013229,57.589658,C,node/1999938807
+hotel,Villa Oasis II,,,,-20.006221,57.596696,C,node/2153348722
+hotel,"Villa Piedanlo, Pool & Beach front",,,,-20.038826,57.543616,C,node/12285309142
+hotel,Villas Caroline,,,,-20.275967,57.368858,C,way/413653878
+hotel,Villas Caroline,,,,-20.275695,57.36912,C,way/1108376838
+hotel,Villas Valriche,,,,-20.503872,57.416371,C,node/2160717062
+hotel,Voile Bleu,,,,-20.047148,57.527731,C,way/1343011027
+hotel,White Oaks Villas,,,,-20.047346,57.527312,C,way/1343011028
+hotel,Wolmar 373,,,,-20.292119,57.365875,C,node/14267752701
+hotel,mallside coastal heven at grand baie,,,,-20.013229,57.586364,C,node/14267760601
+hotel,maritim,,,,-20.084984,57.516155,C,node/9926065717
+hotel,mauri holidays budgeted apartment,,,,-20.426566,57.360888,C,node/14267732301
+hotel,paradizo apartments,,,,-19.996271,57.590943,C,node/4237225790
+hotel,sikamefer,,,,-20.273431,57.471756,C,way/1184486712
+pension,Aanri hotel & spa,,,,-20.279012,57.368167,C,node/12180421810
+pension,Akuvara Villa,,,,-20.203105,57.784433,C,node/4610095750
+pension,Alizees,,,,-20.008476,57.598041,C,node/4547571391
+pension,Alpha Villa - Studios & Apartments,,,,-20.283605,57.365788,C,node/4603460552
+pension,Alvine,,,,-20.432027,57.35549,C,node/11962729751
+pension,Anba's,,,,-20.046837,57.536662,C,node/5760339089
+pension,Apartment Le Cygne,,,,-19.996558,57.597099,C,node/4605162522
+pension,Ashmara Villa,,,,-20.283392,57.37108,C,node/4603375541
+pension,Assonvilla Petrusmok,,,,-20.00865,57.67027,C,node/4609250568
+pension,Astroea beach Hotel,,,,-20.436094,57.7263,C,node/440650855
+pension,Atrium Apartment,,,,-20.013197,57.590874,C,node/4603977195
+pension,Au bout du monde Villa,,,,-20.288606,57.36708,C,node/11721886078
+pension,Auberge Le Rajah,,,,-20.273149,57.469998,C,node/4603041258
+pension,Auberge Le Saladier,,,,-20.410588,57.70763,C,node/4612233335
+pension,Auberge Le Saladier,,,,-20.410111,57.707842,C,node/4840974480
+pension,Auberge Miko,,,,-20.016351,57.584596,C,node/4604022144
+pension,Auberge Paille en Queue,,,,-20.274666,57.373002,C,node/4603496596
+pension,Auberge SeaFever,,,,-20.41076,57.71135,C,node/5184645321
+pension,Azuri Cour Ambre,Sunlife,,,-20.104031,57.727223,C,node/4609250577
+pension,Baby Chambres d'hôtes,,,,-20.019126,57.578406,C,node/4576762203
+pension,Balinea Villas,,,,-20.000046,57.611818,C,node/4605144974
+pension,Banyan Villas,,,,-20.008807,57.670478,C,node/4609250567
+pension,Bavanoca,,,,-20.442377,57.718045,C,node/4612441506
+pension,Bayview Villa Seaside,,,,-20.285467,57.367768,C,node/4603394336
+pension,Belle Plage Villas,,,,-20.216636,57.796706,C,node/2132048414
+pension,Bleu de Toi,,,,-19.997122,57.587103,C,node/4226772595
+pension,Blue Bay Holiday Resort,,,,-20.442383,57.71733,C,node/4612441507
+pension,Blue Beryl,,,,-20.445115,57.718417,C,node/4612441517
+pension,Blue Ocean Apartments,,,,-20.23769,57.793875,C,node/2203181264
+pension,Blue Paradise,,,,-20.047225,57.533186,C,node/4603579235
+pension,Blue Sky,,,,-20.276146,57.376744,C,node/4603381652
+pension,Bungalow Regina,,,,-20.286421,57.366312,C,way/742426026
+pension,C' est Ici,,,,-20.037552,57.544288,C,node/2157564594
+pension,C-Nous Guesthouse,,,,-20.418808,57.711148,C,node/2288166727
+pension,Cape Point,,,,-19.986624,57.62436,C,node/4609148842
+pension,Casa Alegria,,,,-19.994969,57.589687,C,node/4605161867
+pension,Casanier Apartment,,,,-19.990776,57.5962,C,node/8925562007
+pension,Case Cassia,,,,-20.516539,57.496161,C,node/10876205705
+pension,Centraville,,,,-20.012731,57.585793,C,node/4604016827
+pension,Chalet Cardinal,,,,-20.516918,57.499386,C,node/4612481554
+pension,Chante au Vent,,,,-20.444803,57.718475,C,node/2288180642
+pension,Chantemer,,,,-20.427998,57.726234,C,node/2288169305
+pension,Chez Allan,,,,-20.495002,57.38335,C,node/4612532936
+pension,Chez Jacques,,,,-20.327984,57.377299,C,node/4613689267
+pension,Chez Johnny,,,,-20.44245,57.719284,C,node/4612441503
+pension,Chez Johnny,,,,-20.442566,57.71633,C,node/6183084985
+pension,Chez Pepe Suites,,,,-20.283548,57.365028,C,node/4603503947
+pension,Chez Sanjay,,,,-20.432084,57.355057,C,node/6996698628
+pension,ChillPILL Guesthouse,,,,-20.412448,57.711075,C,node/4612233337
+pension,Clos du Littoral,,,,-20.021909,57.583647,C,node/4603942110
+pension,Coco Villa,,,,-20.412717,57.710958,C,node/2288164249
+pension,Coconut Villa,,,,-20.170251,57.451475,C,node/4613851558
+pension,Coconuts,,,,-19.999601,57.583814,C,node/4605166492
+pension,Colibri Beach Villas,,,,-20.237806,57.793639,C,node/4610124441
+pension,Corail Blue Private Villas,,,,-19.989709,57.606255,C,node/4609054570
+pension,Coral Bay,,,,-20.443424,57.719913,C,node/4612441502
+pension,Cosi Dolce,,,,-19.998597,57.595712,C,node/4605162521
+pension,Cosy Villa,,,,-20.046941,57.533652,C,node/4603578162
+pension,Diamant Blu,,,,-20.287963,57.364351,C,node/4603367151
+pension,Dik Villa,,,,-19.999801,57.590248,C,node/4605131513
+pension,Dishay Villa,,,,-19.994612,57.5925,C,node/4605165401
+pension,Easy World,,,,-20.278079,57.369056,C,node/828423145
+pension,Ebrahim Flats,,,,-20.012431,57.584821,C,node/4603977196
+pension,Eden Villa,,,,-20.197357,57.775854,C,node/4610092289
+pension,Eden Villa,,,,-20.197331,57.775855,C,way/677858664
+pension,Eolia,,,,-20.438795,57.72398,C,node/4612396708
+pension,Esprit Libre,,,,-20.007831,57.55812,C,node/4603930944
+pension,Euhrek2,,,,-20.17498,57.437347,C,way/1182577226
+pension,EvaZion,,,,-20.286933,57.777182,C,node/4611423541
+pension,Fina Villa,,,,-20.02902,57.55983,C,node/4603694835
+pension,Fleur De Sel,,,,-20.430814,57.726635,C,node/4612377150
+pension,"Flic en Flac, Villa Osumare",,,,-20.274997,57.371249,C,node/6916887887
+pension,Fortuna Residences,,,,-20.279712,57.368732,C,node/4603387165
+pension,Freestyle suit,,,,-20.471339,57.345701,C,node/4612532949
+pension,Ginger,,,,-20.33705,57.370619,C,node/4613689261
+pension,Gite des Acacias,,,,-20.464467,57.670665,C,node/4612460011
+pension,Gold Leaf,,,,-20.164572,57.492101,C,node/5913410886
+pension,Golden Rod villa,,,,-20.216236,57.794667,C,node/4610124047
+pension,Golden Shell Residence,,,,-20.239255,57.784356,C,node/4610144621
+pension,Green Discovery B&B,,,2,-20.341941,57.470266,C,node/6985271513
+pension,Happy Ours Guesthouse,,,,-20.315464,57.521581,C,node/10699151873
+pension,Harold et Maryse,,,,-20.44385,57.719567,C,node/2288179710
+pension,Hello Guest House,,,,-20.271223,57.47547,C,way/1008925818
+pension,Hot Sun Bungalow,,,,-20.010884,57.665353,C,node/8925562004
+pension,Imayam,,,,-20.18672,57.773217,C,node/4610086404
+pension,Island Residence Plaisance,,,,-20.437127,57.659479,C,node/11311070869
+pension,Island's Edge Villa,,,,-19.99423,57.589458,C,node/4605118208
+pension,JN Sunflower Residence,,,,-20.472041,57.34584,C,node/13410174801
+pension,Jardin du soleil,,,,-20.443865,57.719211,C,node/2288179776
+pension,Jenaqualodge,,,,-20.110093,57.508089,C,node/4613851563
+pension,Jogen home,,,,-20.176228,57.512994,C,node/4584137603
+pension,Kammal Villa,,,3,-20.282159,57.369675,C,node/5586987041
+pension,Kaz’alala Hosted B&B,Heritage / Veranda (Rogers),,,-20.503099,57.412901,C,node/12180392241
+pension,Kenville,,,,-19.986925,57.604093,C,node/4609098735
+pension,Keravel,,,,-20.441841,57.721541,C,node/4612441498
+pension,Koki Bonheur,,,,-20.138012,57.753287,C,node/4610025477
+pension,Kowlessur Residence,,,,-20.510937,57.509785,C,node/11657472870
+pension,Krestel Nest,,,,-20.284655,57.36734,C,node/4603395433
+pension,Kuxville Beach Cottages,,,,-19.986502,57.626872,C,node/2187311659
+pension,L' Oiseau du Paradis,,,,-20.443091,57.719718,C,node/2288197706
+pension,La Barachois Chambres Rustique,,,,-20.338179,57.766985,C,node/2623286187
+pension,La Case Creole Villa,,,,-20.104769,57.730995,C,node/4609250721
+pension,La Caze Roche,,,,-20.418461,57.71059,C,node/4612361005
+pension,La Cocoteraie,,,,-20.481893,57.355202,C,node/4612532937
+pension,La Dorade,,,,-20.045639,57.534124,C,node/4603571828
+pension,La Felicita,,,,-20.038162,57.543731,C,node/2135150561
+pension,La Hacienda,,,,-20.368298,57.719101,C,node/2164872983
+pension,La Maison Soleil,,,,-20.240116,57.780496,C,node/4610147572
+pension,La Perla Holiday Apartments,,,,-19.995951,57.590427,C,node/4605161868
+pension,La Piroga,,,,-20.431884,57.72682,C,node/4612377149
+pension,La Pointe Villas,,,,-20.006503,57.558147,C,node/2153380500
+pension,La Residence Beach Apartments,,,,-19.987543,57.598399,C,node/4605128464
+pension,La Rosier,,,,-20.241655,57.782633,C,node/10264881510
+pension,La Roue Charette,,,,-20.174633,57.437924,C,way/1182577228
+pension,La Tonnelle Guest House,,,,-20.041568,57.541723,C,node/4603594223
+pension,La Vigie Guesthouse,,,,-20.31953,57.533376,C,node/4603036051
+pension,La route des épices,,,,-20.330817,57.373865,C,node/4613689265
+pension,Lakaz Aksu,,,,-20.518204,57.482998,C,node/4612532927
+pension,Lakaz Lor Ros,,,,-20.217988,57.404346,C,node/4613689271
+pension,Lakaz Tropikal,,,6,-20.286794,57.367791,C,node/11687837457
+pension,Lariad BnB,,,,-20.281971,57.370656,C,node/5622470523
+pension,Le Bamboo,,,,-20.408402,57.703574,C,node/4612227764
+pension,Le Barachois,,,,-20.015809,57.670222,C,node/5183093333
+pension,Le Beau Manguier Residence,,,,-19.992715,57.594604,C,node/4605146818
+pension,Le Cactus Guest House,,,,-20.109075,57.510387,C,node/4613851564
+pension,Le Choisy,,,,-20.021145,57.558447,C,node/4603678598
+pension,Le Koquillishe B&B,,,,-20.238508,57.78949,C,node/10763663345
+pension,Le Lataniers,,,,-20.282152,57.370133,C,node/882026145
+pension,Le Mirage Exotique,,,,-20.28223,57.366868,C,node/4603356662
+pension,Le Pôle,,,,-20.016524,57.583812,C,node/4604009050
+pension,Le Rochester,,,,-20.512484,57.516344,C,node/4612481552
+pension,Le Tamarinier,,,,-20.283411,57.370405,C,node/4603375540
+pension,Le cube,,,,-20.006456,57.560401,C,node/5461625971
+pension,LeBovallon B&B,,,,-20.419902,57.709549,C,node/4612361004
+pension,Les 2 Cocos,,,,-20.108202,57.743232,C,node/4609255434
+pension,Les Badamiers,,,,-20.22943,57.804407,C,node/2187302036
+pension,Les Buissons,,,,-19.987405,57.59794,C,node/2158566968
+pension,Les Chamblynes Villas,,,,-20.110278,57.523949,C,node/3754025738
+pension,Les Dauphin Villa,,,,-20.197489,57.775775,C,way/677858665
+pension,Les Lataniers,,,,-20.44396,57.323309,C,node/2160751577
+pension,Lharmonie Villa,,,,-19.993264,57.593973,C,node/4605134664
+pension,Logement Pieds Dans L'eau,,,,-20.40409,57.707704,C,node/4612227761
+pension,Lotus Villa,,,,-20.283687,57.3714,C,node/4603375579
+pension,Lotus Villa,,,,-20.02226,57.583573,C,node/4603943353
+pension,MOTAH RESIDENCE,,,,-20.414826,57.62641,C,way/1213532797
+pension,Ma Vie La,,,,-20.444407,57.324874,C,node/6110282274
+pension,Maison Lantana,,,,-20.104874,57.722933,C,way/406525468
+pension,Maison Sympa,,,,-20.066555,57.521294,C,node/4613851568
+pension,Maison d'hôtes (sans nom),,,,-20.274424,57.372334,C,node/5302347922
+pension,Maison d'hôtes (sans nom),,,,-20.278047,57.371506,C,node/5366070824
+pension,Maison d'hôtes (sans nom),,,,-20.42879,57.360526,C,node/6099304287
+pension,Maison d'hôtes (sans nom),,,,-20.518758,57.483725,C,way/1351265306
+pension,Maison d'hôtes (sans nom),,,,-20.518238,57.482986,C,way/1351266007
+pension,Maison d'hôtes (sans nom),,,,-20.387848,57.695579,C,way/1383855857
+pension,Manuel's Apartement,,,,-20.146724,57.525581,C,node/11035498806
+pension,Melvin’s Home,,,,-20.1989,57.409211,C,node/7084358385
+pension,Mo Residence,,,,-20.006366,57.595226,C,node/4605148452
+pension,Mogador,,,,-20.003757,57.560458,C,node/4603706851
+pension,Moi Et Toi,,,,-19.986667,57.606346,C,node/4609089884
+pension,Mon Petit Coin De Paradis,,,,-20.160958,57.762344,C,node/4610080724
+pension,Monalysa Holiday Bungalows,,,,-20.012964,57.58595,C,node/4603941295
+pension,Monalysa St Honore Apartment & Studios,,,,-20.015789,57.587443,C,node/4603959771
+pension,Mountain View,,,,-20.424673,57.36366,C,node/4612560209
+pension,My Home Location,,,,-20.042672,57.546237,C,node/5183119529
+pension,Myra Seafront Suites,,,,-19.986476,57.626039,C,node/4609152319
+pension,Nativ Lodge and Spa,,,,-20.415508,57.702434,C,node/4612335559
+pension,ONS Motel,,,,-20.408525,57.705962,C,node/4612233334
+pension,Ocean Garden,,,,-20.322405,57.380219,C,node/8380218437
+pension,Ohana Retreat Villa,,,,-20.025672,57.558643,C,node/11739306655
+pension,One&Only Le Saint Gérant - Private Homes,One&Only,,,-20.163113,57.760936,C,way/189408936
+pension,Open Air Café & Apartment,,,,-20.167064,57.468701,C,node/4613811676
+pension,Orchid Villas,,,,-20.205754,57.785484,C,node/4610105067
+pension,Orient Guesthouse,,,,-20.411433,57.710742,C,node/8740314503
+pension,PAUL AND DANIELLE,,,,-20.322089,57.519873,C,way/1213532796
+pension,PPAYET RESIDENCE,,,,-20.363345,57.395597,C,way/1213532798
+pension,Palm Green Villa,,,,-20.012267,57.590669,C,node/4604030141
+pension,Papaya Apartments,,,,-19.987321,57.603207,C,node/4609098734
+pension,Papaye,,,,-20.424525,57.363806,C,node/4612560210
+pension,Paradaya Beach Apartments,,,,-20.288177,57.364316,C,node/4603367152
+pension,Parc Marin,,,,-20.441815,57.715654,C,node/4612441512
+pension,Patvijsar Beach complex,,,,-20.287009,57.366992,C,way/742426032
+pension,Paulse Penthouse,,,,-20.001771,57.623403,C,node/8925562006
+pension,Pereybere View,,,,-19.995997,57.589924,C,node/2998169618
+pension,Peter's Beach House,,,,-20.120963,57.754311,C,node/4609256523
+pension,Pik-pik,,,,-20.44348,57.323036,C,node/1433545297
+pension,Quatre Epices,,,,-20.141057,57.740175,C,node/4610029719
+pension,Reshmoh guest house,,,,-20.222831,57.466845,C,node/7276192852
+pension,Residence - Villas Mont Choisy,,,,-20.021981,57.554648,C,node/2135130555
+pension,Residence Ametisse,,,,-20.195596,57.773178,C,node/4610091886
+pension,Residence Brabant,,,,-20.471034,57.345623,C,node/4612532948
+pension,Residence Capri,,,,-20.025351,57.551858,C,node/2135137028
+pension,Residence Ciel Bleu,,,,-20.27913,57.380116,C,node/4603382490
+pension,Residence Dilmed,,,,-20.285657,57.365603,C,node/2129473980
+pension,Residence Dream Lodge,,,,-20.285113,57.367242,C,node/4603396763
+pension,Residence Indira Bdt,,,,-20.108047,57.512506,C,node/4613851565
+pension,Residence Le Maho,,,,-20.241943,57.784235,C,node/4610142242
+pension,Residence Les Cygnes,,,,-19.999614,57.586608,C,node/3956288440
+pension,Residence Les Peupliers,,,,-20.279371,57.368767,C,node/4603387113
+pension,Residence Page Blanche,,,,-20.28634,57.366529,C,way/742426029
+pension,Residence Palm d'Or,,,,-20.2842,57.369716,C,node/4603378311
+pension,Residence Peramal,,,,-20.014331,57.571916,C,node/2187287639
+pension,Residences Abrico,,,,-20.025728,57.551205,C,node/4603697541
+pension,Ricky House,,,,-20.273709,57.468799,C,way/1213532800
+pension,Rivabella,,,,-20.169788,57.451744,C,node/4613851557
+pension,Royal Flo Residence,,,,-20.013372,57.591359,C,node/4603974323
+pension,Résidence Le Golf,,,,-20.036268,57.546704,C,node/4603616448
+pension,Résidence Le Palmier,,,,-20.024274,57.553558,C,node/4603697030
+pension,Résidence Syrina,,,,-20.037977,57.545778,C,node/4603630661
+pension,Résidence du Nord,,,,-19.990369,57.60932,C,node/5637323523
+pension,S.M tourist villa,,,,-20.197132,57.775621,C,way/677858656
+pension,SM Lodge,,,,-20.243169,57.783873,C,node/4610147034
+pension,Sankhara,,,,-20.136212,57.752914,C,node/4610025591
+pension,Sea View Villas,,,,-20.083648,57.514678,C,node/4613851566
+pension,Sea-lily Beach Villa,,,,-20.214385,57.79254,C,node/4610124046
+pension,Secret Escape,,,,-20.435424,57.664595,C,node/4612459778
+pension,Silver Sands Studios & Apartment,,,,-20.280027,57.366669,C,node/4603405330
+pension,So Beach Villa,,,,-20.104135,57.730078,C,node/4609250720
+pension,Sous Le Vent,,,,-20.003206,57.568929,C,node/4603703846
+pension,Sphere Four,,,,-20.518701,57.483732,C,node/4612532926
+pension,Studio Manguillier,,,,-20.238269,57.792861,C,node/4610124442
+pension,Summer Breeze,,,,-20.44162,57.721716,C,node/4612441499
+pension,Sun & Earth Villa,,,,-20.027138,57.559506,C,node/4603686249
+pension,Sun Villa & Apartments,,,,-20.022937,57.554209,C,node/4603676797
+pension,Sunset Beach Apartment,,,,-20.013169,57.583787,C,node/4604009048
+pension,Sunset Villa,,,,-20.429588,57.36084,C,node/4612560203
+pension,Sunshine Villa Mauritius,,,,-20.277136,57.380342,C,node/4603513529
+pension,Suntoo Villa,,,,-20.436486,57.353617,C,node/4612560198
+pension,Sunway Residence,,,,-20.021601,57.555145,C,node/4603686248
+pension,The River House,,,,-20.32363,57.381426,C,way/384696031
+pension,Ti Cabanon,,,,-20.218332,57.401541,C,node/4613689270
+pension,Ticaza,,,,-20.36976,57.366832,C,node/4613547744
+pension,Titli,,,,-20.387835,57.695581,C,node/4612160564
+pension,Top Notch Villa,,,,-20.352397,57.362247,C,node/4613689245
+pension,Tout Le Monde En Parle,,,,-20.001466,57.596965,C,node/4603995296
+pension,Tree Lodge Mauritius,,,,-20.200872,57.738012,C,node/6186109757
+pension,Trident Villa,,,,-20.082767,57.514629,C,node/4613851567
+pension,Turquoise Bay Trou d'Eau Douce,,,,-20.237748,57.793831,C,node/4610124440
+pension,Twins Apartments,,,,-20.283323,57.371385,C,node/4603375542
+pension,Tyvabro,,,,-20.407997,57.704755,C,node/4612227765
+pension,VaKans Kreol,,,,-20.441026,57.717046,C,node/4612441508
+pension,Veloutier Blanc,,,,-20.443182,57.720084,C,node/4612441501
+pension,Villa Acassia,,,,-20.349318,57.365667,C,node/4613689246
+pension,Villa Agata,,,,-20.021897,57.55495,C,node/4603676796
+pension,Villa Alalila,,,,-20.111312,57.747986,C,node/4609255524
+pension,Villa Alalila - Vue sur Mer,,,,-20.170489,57.449278,C,node/4613851559
+pension,Villa Alira,,,,-20.443574,57.323777,C,node/4612532956
+pension,Villa Anakao Mauritius,,,,-20.170589,57.449055,C,node/4613851560
+pension,Villa Antema,,,,-20.5164,57.499386,C,node/4612481555
+pension,Villa Avenue des Aigrettes,,,,-20.405268,57.708251,C,node/4612227763
+pension,Villa Blue Marlin Iris,,,,-20.440667,57.715886,C,node/4612441511
+pension,Villa Brunner,,,,-20.262767,57.378515,C,node/2756297287
+pension,Villa Cazalines,,,,-20.36987,57.366372,C,node/4613547745
+pension,Villa Eglantine,,,,-20.008737,57.666112,C,node/8925562005
+pension,Villa Eva,,,,-20.160961,57.761915,C,node/4610080723
+pension,Villa Fauverelle,,,,-20.397289,57.697297,C,node/4612162101
+pension,Villa Idriss,,,,-20.007122,57.598812,C,node/4603998450
+pension,Villa In Beau Vallon,,,,-20.42606,57.701986,C,node/4612361006
+pension,Villa Isabella,,,,-20.21238,57.792066,C,node/4610105068
+pension,Villa Jessica,,,,-20.167821,57.456668,C,node/4613851556
+pension,Villa Le Banian,,,,-20.243863,57.787186,C,node/4610149522
+pension,Villa Le Rubis Bleu,,,,-20.26833,57.479813,C,way/1006390566
+pension,Villa Les Salines,,,,-20.369544,57.367246,C,node/2306409273
+pension,Villa Michel,,,,-20.517197,57.494153,C,node/4612481556
+pension,Villa OSoleil,,,,-20.019922,57.580857,C,node/4603960396
+pension,Villa Oasis,,,,-20.002418,57.592137,C,node/4603968160
+pension,Villa Orchidée,,,,-20.425134,57.365149,C,node/4612560213
+pension,Villa Radani,,,,-20.234588,57.784913,C,node/4551111390
+pension,Villa Soleil D’été,,,,-20.442025,57.720629,C,node/4612441500
+pension,Villa Soleil Levant,,,,-20.237559,57.796704,C,node/4610124048
+pension,Villa Sundara,,,,-20.026835,57.551619,C,node/3883009391
+pension,Villa Sunny Side Up,,,,-20.007088,57.598383,C,node/10741645094
+pension,Villa Talassa,,,,-20.444621,57.324775,C,node/2540419935
+pension,Villa Viras,,,,-20.443785,57.711059,C,node/4612441964
+pension,Villa Virginia,,,,-20.137758,57.754085,C,node/4610025476
+pension,Villa de la Pointe,,,,-20.107863,57.745319,C,node/4609255435
+pension,Villa des Canaris,,,,-20.218443,57.408273,C,node/4613689273
+pension,Villa le cocotier,,,,-20.286128,57.366908,C,way/483372786
+pension,Villa of Joy,,,,-20.278772,57.378108,C,node/4603382489
+pension,Villa ouvira,,,,-20.286009,57.366414,C,way/742426027
+pension,Villa sarojini cunniapen,,,,-20.286907,57.366461,C,way/742426030
+pension,Villas Cap Nord,,,,-19.986848,57.597187,C,node/4605133577
+pension,Villas Le Guerlande,,,,-20.442835,57.720399,C,node/2288197332
+pension,Villas de la Pointe,,,,-20.061136,57.519863,C,node/4613851571
+pension,Villasun Luxury Apartments & Villas,,,,-20.280749,57.37875,C,node/4603369843
+pension,Vintage Lodge,,,,-20.263169,57.487997,C,node/9342168919
+pension,Wanna Studio Apartments,,,,-20.006866,57.560431,C,node/4603940957
+pension,Waterside,,,,-20.016023,57.580331,C,node/2131948002
+pension,West Coast View,,,,-20.279087,57.378135,C,node/4603458216
+pension,West Sand Tourist Residence,,,,-20.279272,57.374003,C,node/4603504325
+pension,West Terrace,,,,-20.287525,57.3643,C,node/4603356830
+pension,Ylang-Ylang,,,,-20.430523,57.727008,C,node/4612377151
+pension,casa carla,,,,-20.00377,57.557955,C,node/4428954792
+pension,homeland,,,,-20.304592,57.531005,C,node/4405490790
+pension,la Petite Villa,,,,-20.237598,57.792299,C,node/4610126370
+pension,residence les pruniers,,,,-20.286946,57.366712,C,way/742426031
+pension,sd properties,,,,-20.110334,57.627223,C,node/13844804838
+pension,villa3tours,,,,-20.217576,57.403692,C,node/4613689272
+residence,2 Beach,,,,-19.997628,57.58523,C,way/1476528163
+residence,2 seasons,,,,-20.015471,57.58314,C,way/1347343212
+residence,711,,,,-20.033657,57.547712,C,way/1361928682
+residence,712,,,,-20.033859,57.547596,C,way/1361928683
+residence,A,,,,-20.228537,57.526639,C,node/10875992756
+residence,A1,,,,-20.228954,57.526741,C,node/10875992757
+residence,A2,,,,-20.229354,57.526825,C,node/10875992758
+residence,A3,,,,-20.22982,57.526989,C,node/10875992759
+residence,Albatros Residence,,,,-20.202611,57.40513,C,node/4613689278
+residence,Albizia,,,,-20.439581,57.397174,C,way/1365221707
+residence,Aldabra,,,,-20.425339,57.365477,C,node/4612560212
+residence,Ana Villa,,,,-20.277406,57.369411,C,way/580820969
+residence,Aparthotel de Tamarin,,,,-20.341305,57.363492,C,node/4306938728
+residence,Apartments Kitebreak,,,,-20.425932,57.364134,C,node/4612560214
+residence,Appart. le Bi-dul,,,1,-20.111954,57.503958,C,node/9334561882
+residence,Appertments Trou aux Biches,,,,-20.045232,57.551298,C,node/6065356587
+residence,Arkenstone Studios,,,,-20.424929,57.363356,C,node/4612560207
+residence,Atelier,,,,-20.440341,57.396903,C,node/12620734979
+residence,Aurelia Lodge,,,,-20.51996,57.52918,C,node/11893722469
+residence,Autentik Garden,,,10,-20.502969,57.400972,C,node/7413055444
+residence,Azur Paradise,,,,-20.015332,57.582851,C,way/1347343211
+residence,B,,,,-20.22814,57.526618,C,node/10875992755
+residence,Baywatch Apartment,,,,-20.41533,57.367804,C,node/4612560216
+residence,Bella Beach Villa,,,,-20.003752,57.569993,C,node/5650299336
+residence,Belle Heaven,,,,-20.025015,57.551714,C,node/4597786253
+residence,Benitier Apartment,,,,-20.427504,57.359716,C,node/4612560205
+residence,Blue-C Lifestyle,,,,-20.442936,57.717698,C,node/11598715586
+residence,Bois Mapou self-catering apartments,,,,-20.354998,57.364807,C,way/1104784689
+residence,Bungalow Aviam,,,,-19.987118,57.597219,C,node/7038291785
+residence,Bungalow Vitelli,,,,-20.104264,57.733348,C,node/7038299486
+residence,Bungalows Cannelle,,,,-20.353356,57.362764,C,node/4613689244
+residence,C,,,,-20.228245,57.526178,C,node/10875992754
+residence,Caban Studio,,,,-20.417713,57.36417,C,node/7257657485
+residence,Carlos Bay,,,,-20.339604,57.372225,C,node/4613689256
+residence,Casuarina Resort,,,,-20.027846,57.550311,C,way/1448535261
+residence,Causette,,,,-20.16779,57.469761,C,node/4837979121
+residence,Chez Mimi,,,,-20.406426,57.698611,C,node/12291967043
+residence,Citronnier,,,,-20.43956,57.397279,C,way/1365221708
+residence,Colonial cocoons studio,,,,-20.425182,57.362532,C,node/13857918601
+residence,Cozy little house,,,,-20.028772,57.550663,C,way/1448535308
+residence,D,,,,-20.228305,57.525717,C,node/10875992753
+residence,D,,,,-20.03624,57.680811,C,node/10879145857
+residence,Dodo Apartments,,,,-20.238311,57.789309,C,node/10756010578
+residence,Dolce Vita Luxury Beachfront Residences,,,,-20.360321,57.370829,C,node/4613547752
+residence,Dragon Nest Appartements,,,2,-20.159498,57.505834,C,node/11361107093
+residence,E,,,,-20.22837,57.525422,C,node/10875992752
+residence,E,,,,-20.036177,57.681052,C,node/10879145858
+residence,Ecostay Apartments,,,,-20.285951,57.372885,C,node/12121183787
+residence,Element Bay 1,,,,-19.987204,57.603534,C,way/1414890910
+residence,Element Bay 2,,,,-19.987839,57.603716,C,way/1414890911
+residence,Escale Du Sud,,,,-20.516627,57.500942,C,node/4612481553
+residence,Esplanade,,,,-20.347457,57.362917,C,node/4613689248
+residence,F,,,,-20.228476,57.525041,C,node/10875992751
+residence,F,,,,-20.036104,57.681261,C,node/10879145859
+residence,G,,,,-20.228537,57.524697,C,node/10875992750
+residence,G,,,,-20.036071,57.681462,C,node/10879145860
+residence,Grankaz,,,,-20.439666,57.397111,C,way/1365221706
+residence,H,,,,-20.036077,57.681724,C,node/10879145861
+residence,Happy Days,,,,-20.429434,57.359764,C,node/4612560201
+residence,Haven Studios & Apartment,,,,-20.424878,57.363003,C,node/4612560206
+residence,Heliconia Guesthouse,,,,-20.006851,57.562462,C,node/4198867213
+residence,Hillside Haven,,,,-20.34182,57.370577,C,node/4613689255
+residence,Hope Evasion,,,,-20.33844,57.371927,C,node/4613689260
+residence,I,,,,-20.036084,57.681972,C,node/10879145862
+residence,J,,,,-20.036071,57.682174,C,node/10879145863
+residence,JR Residence,,,,-20.269105,57.473763,C,way/1006710098
+residence,Jardin de Corail,,,,-20.436792,57.725922,C,way/381718905
+residence,Joubarbe Residence,,,,-20.21551,57.495556,C,node/4751262929
+residence,K,,,,-20.036082,57.68251,C,node/10879145864
+residence,Krishorejet Beach Apartment,,,,-20.293045,57.364668,C,node/4208908500
+residence,L,,,,-20.036074,57.682722,C,node/10879145865
+residence,L'Oiseau du Paradis,,,,-20.276775,57.36969,C,node/5558953284
+residence,L'escale Beachfront,,,,-20.355707,57.362264,C,node/4613689243
+residence,La 9eme Suite Luxury,,,,-19.986864,57.59844,C,way/1528549631
+residence,La Balise,,,,-20.366477,57.378249,C,node/2306410213
+residence,La Colombe Residences,,,,-20.018433,57.585476,C,node/4728877390
+residence,La Maison de la Plage,,,,-20.205016,57.404885,C,node/4613689277
+residence,La Mivoie by Horizon Holidays,,,,-20.36543,57.37205,C,way/1322550003
+residence,La Preneuse Sur Mer,,,,-20.35982,57.368941,C,node/4613547763
+residence,Lacasepoz,,,,-20.338487,57.370894,C,node/4613689257
+residence,Latitude,,,,-20.359453,57.369996,C,node/4613547753
+residence,Le Couché De Soleil,,,,-20.342377,57.368146,C,node/4613689253
+residence,Le Diamant Vert Apartments @ Mont Choisy,,,,-20.024801,57.552654,C,node/10118149017
+residence,Le Morne Kite Villas,,,,-20.424775,57.363228,C,node/4612560208
+residence,Les Chalets en Champagne,,,,-20.423108,57.418276,C,way/251185136
+residence,Lorlagon and Lorlabaie,,,,-20.239538,57.787177,C,node/12278241590
+residence,Luckshem,,,,-20.184703,57.43064,C,node/4613689283
+residence,Luxe Exotica Apartment,,,,-20.438092,57.352322,C,node/4612560196
+residence,M,,,,-20.03585,57.683186,C,node/10879145866
+residence,Maison au Clos de la Forêt,,,,-20.330841,57.527128,C,node/12850397401
+residence,Maison du Potager,,,,-20.440376,57.396263,C,node/12620734980
+residence,Manines Lodge,,,,-20.364411,57.372575,C,way/1322540981
+residence,Manoir de La Citadelle,,,,-20.166676,57.511901,C,node/4613851562
+residence,Marguery Exclusive Villas,,,,-20.356612,57.367433,C,node/4613689242
+residence,Mermaid cove,,,,-20.441949,57.712356,C,node/11598715582
+residence,MoVacances Operator,,,,-20.426644,57.541815,C,node/6284820622
+residence,N,,,,-20.035764,57.683428,C,node/10879145867
+residence,NHDC Palma,,,,-20.276186,57.45558,C,node/7692151685
+residence,Northern Pearl Luxury Apartments,,,,-20.025191,57.552738,C,node/10140289018
+residence,O,,,,-20.035706,57.683713,C,node/10879145868
+residence,Oasis appartments,,,,-20.440281,57.718539,C,way/1345199755
+residence,Ocean apartments,,,,-20.429092,57.360518,C,node/4612560202
+residence,Olana Beachfront Apartments,,,,-20.359344,57.367668,C,node/4613689241
+residence,One Loft,,,,-20.348635,57.365988,C,node/4613689247
+residence,P,,,,-20.035794,57.684022,C,node/10879145869
+residence,Palm Villa,,,,-20.437778,57.352323,C,node/9645054671
+residence,Party villa Jin Fei,,,,-20.114894,57.518955,C,way/1515054917
+residence,Petit bout de paradis,,,,-20.33095,57.372832,C,node/4613689263
+residence,Pingo Premium,,,,-20.431012,57.357303,C,node/4612560200
+residence,Pingo Studios,,,,-20.439009,57.352394,C,node/4612560194
+residence,Pingouin villas,,,,-20.440524,57.717975,C,node/4612441509
+residence,Pour les Riches,,,,-20.272317,57.802478,C,node/10115775018
+residence,Ramesh Harry,,,,-20.415058,57.368078,C,node/5575158322
+residence,Residence Mont Olympe,,,,-19.995045,57.618212,C,way/1346382165
+residence,Residence Sam & Chlo,,,1,-20.015473,57.582497,C,node/10874990736
+residence,Residence page blanche,,,,-20.286214,57.366551,C,way/742426028
+residence,Residences Varana,,,,-19.987604,57.605415,C,node/11541047982
+residence,Riverside,,,,-20.434381,57.355226,C,node/4612560199
+residence,Résidence Les Alizés,,,6,-20.422033,57.365152,C,node/4612560215
+residence,Résidence touristique (sans nom),,,,-20.327927,57.505333,C,node/4587069989
+residence,Résidence touristique (sans nom),,,,-20.235811,57.482739,C,node/4674022671
+residence,Résidence touristique (sans nom),,,,-20.467403,57.342987,C,node/5643804624
+residence,Résidence touristique (sans nom),,,,-20.279494,57.377042,C,node/6065356588
+residence,Résidence touristique (sans nom),,,,-20.282483,57.368683,C,node/7004109786
+residence,Résidence touristique (sans nom),,,,-20.272409,57.806602,C,node/10115772657
+residence,Résidence touristique (sans nom),,,,-20.219835,57.404592,C,node/12298844001
+residence,Résidence touristique (sans nom),,,,-20.111913,57.519017,C,way/679293146
+residence,Résidence touristique (sans nom),,,,-20.293428,57.499159,C,way/1222668334
+residence,Résidence touristique (sans nom),,,,-20.44198,57.712416,C,way/1308843762
+residence,Résidence touristique (sans nom),,,,-20.441728,57.716359,C,way/1308843770
+residence,Résidence touristique (sans nom),,,,-20.44117,57.716202,C,way/1308843771
+residence,Résidence touristique (sans nom),,,,-20.440697,57.715959,C,way/1308843772
+residence,Résidence touristique (sans nom),,,,-20.441052,57.71706,C,way/1308843773
+residence,Résidence touristique (sans nom),,,,-20.441401,57.719005,C,way/1308843774
+residence,Résidence touristique (sans nom),,,,-20.442133,57.71901,C,way/1308843776
+residence,Résidence touristique (sans nom),,,,-20.442537,57.720659,C,way/1308843777
+residence,Résidence touristique (sans nom),,,,-20.442932,57.720418,C,way/1308843778
+residence,Résidence touristique (sans nom),,,,-20.443125,57.720204,C,way/1308843779
+residence,Résidence touristique (sans nom),,,,-20.443418,57.719908,C,way/1308843780
+residence,Résidence touristique (sans nom),,,,-20.445145,57.718462,C,way/1308843783
+residence,Résidence touristique (sans nom),,,,-20.442558,57.716389,C,way/1308843795
+residence,Résidence touristique (sans nom),,,,-20.442342,57.717372,C,way/1308843796
+residence,Résidence touristique (sans nom),,,,-20.241804,57.477177,C,way/1329115683
+residence,Résidence touristique (sans nom),,,,-20.036194,57.680434,C,way/1476527281
+residence,Saltpan les lofts,,,,-20.335438,57.372508,C,way/1467075852
+residence,Sea Side,,,,-20.285695,57.373441,C,way/1527422753
+residence,South Reef Luxury Appartement,,,,-20.427035,57.726695,C,node/4612377148
+residence,Sun n Sea Resort,,,,-20.442922,57.717375,C,node/11598715585
+residence,Sunset Coast,,,,-20.346401,57.363291,C,node/4613689249
+residence,Surfers Point,,,,-20.43667,57.353067,C,node/4612560197
+residence,Sweet Island,,,,-20.364385,57.373897,C,way/1320655159
+residence,TamaRose,,,,-20.326956,57.378368,C,node/4613689268
+residence,Tamarin Chambres d'Hotes,,,,-20.342114,57.369139,C,node/4613689254
+residence,Tamarin Loft,,,,-20.331509,57.373454,C,node/4613689262
+residence,Tenexia studios,,,,-20.420157,57.367382,C,node/9264776917
+residence,Terre et Mer,,,,-20.346816,57.367428,C,node/4613689252
+residence,The Coconut Comfy,,,,-20.427578,57.360238,C,node/4612560204
+residence,The Ujoodha's,,,,-20.265831,57.48253,C,way/1005543879
+residence,Tulsie Apartment & Studio,,,,-20.425339,57.365957,C,node/4612560211
+residence,Vila Bougainville Touriste Résidence,,,,-19.996731,57.594442,C,node/11407209469
+residence,Villa Amara,,,,-20.13841,57.753013,C,node/7038187586
+residence,Villa Anaso,,,,-20.237493,57.795761,C,node/7038321685
+residence,Villa Bahia,,,,-20.249622,57.794043,C,node/7038321687
+residence,Villa Du Lagoon,,,,-20.442021,57.72125,C,node/3091136411
+residence,Villa Grankaz,,,,-20.104616,57.733804,C,node/7038291885
+residence,Villa Les Papillons,,3,5,-20.441757,57.716252,C,node/5482281470
+residence,Villa Mahe,,,,-20.234818,57.803316,C,node/6426965789
+residence,Villa Mascareigne,,,,-20.441288,57.716084,C,node/11598715584
+residence,Villa Mauridul,,,3,-20.112271,57.503833,C,node/9334561881
+residence,Villa Prana,,,,-20.044979,57.549091,C,way/1441646316
+residence,Villa Shanti,,,,-20.163583,57.738112,C,node/6996710197
+residence,Villa d' Or,,,,-20.425047,57.365456,C,node/6280257584
+residence,Villa le chille,,,,-20.004649,57.605141,C,way/1433350274
+residence,Villa les Frangipanes,,,,-20.43022,57.359227,C,node/2874282013
+residence,Villa location,,,,-20.002938,57.604307,C,way/1433350275
+residence,VillaTaïssa,,,,-20.236687,57.801991,C,node/7038321686
+residence,Villas Kite,,,,-20.424677,57.364081,C,node/5351186421
+residence,Villas de Tamarin,,,,-20.324103,57.380503,C,node/4486273413
+residence,Vine Kot Nou Table et Chambres d'Hôtes,,,,-20.440291,57.716795,C,node/4612441510
+residence,West Island,,,,-20.365889,57.375502,C,node/2306410176
+residence,West Palm Bed and Breakfast Inn,,,,-20.292199,57.364776,C,node/4208908506
+residence,app2,,,,-20.282393,57.368425,C,way/1474191960
+residence,app3,,,,-20.290083,57.364859,C,way/1474192235
+residence,elec home,,,,-20.410436,57.707132,C,node/13584872463
+residence,h50,,,,-20.015758,57.583167,C,way/1347343213
+residence,mayani,,,,-20.282179,57.371419,C,way/1474191874
+residence,name,,,,-20.001352,57.593891,C,way/1528547278
+residence,raysidence,,,,-20.28777,57.367165,C,way/1358633844
+residence,yasmina 2,,,,-20.289621,57.366288,C,way/1474755816

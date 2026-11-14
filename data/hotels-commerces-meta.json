@@ -1,1 +1,44 @@
-{"updated": null, "en_attente": true}
+{
+ "updated": "2026-11-14T18:40:42+00:00",
+ "hebergements": {
+  "hotel": 244,
+  "pension": 297,
+  "residence": 189
+ },
+ "hotels_ref_rapproches": 0,
+ "hotels_ref_ajoutes": 0,
+ "hotels_avec_chambres": 20,
+ "hotels_avec_etoiles": 11,
+ "hotels_par_groupe": {
+  "Sunlife": 5,
+  "Beau Vallon": 2,
+  "Marriott": 4,
+  "IHG": 2,
+  "LUX Collective": 6,
+  "Indigo Hotels": 7,
+  "Oberoi": 1,
+  "Constance": 4,
+  "One&Only": 2,
+  "Attitude": 8,
+  "Beachcomber": 7,
+  "Heritage / Veranda (Rogers)": 8,
+  "Accor": 2,
+  "Four Seasons": 2,
+  "Radisson": 3,
+  "Hilton": 1,
+  "Club Med": 1
+ },
+ "centres": {
+  "proximite": 26,
+  "regional": 12,
+  "quartier": 30
+ },
+ "centres_projetes": 4,
+ "centres_ref_rapproches": 13,
+ "centres_ref_ajoutes": 4,
+ "fiabilite": {
+  "C": 788,
+  "B": 7,
+  "D": 3
+ }
+}
