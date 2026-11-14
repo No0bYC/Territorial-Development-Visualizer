@@ -1,0 +1,45 @@
+# TDV — Mise à jour des couches Hôtels & hébergements et Centres commerciaux
+# Chaque mois (le 3 à 04:00, heure de Maurice), à la demande,
+# et dès qu'une liste de référence ou le script est modifié.
+# GitHub → Actions → « Mise à jour Hôtels & Commerces » → Run workflow
+name: Mise à jour Hôtels & Commerces
+
+on:
+  schedule:
+    - cron: '0 0 3 * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'data/sources/hotels-reference.csv'
+      - 'data/sources/centres-commerciaux-reference.csv'
+      - 'scripts/update_hotels_commerces.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Construire hotels.json et centres-commerciaux.json
+        run: python3 scripts/update_hotels_commerces.py
+      - name: Commiter si changement
+        run: |
+          git add -N data 2>/dev/null || true
+          if git diff --quiet -- data/hotels.json data/centres-commerciaux.json; then
+            echo "Aucun changement de données."; exit 0
+          fi
+          git config user.name  "tdv-bot"
+          git config user.email "tdv-bot@users.noreply.github.com"
+          git add data/hotels.json data/centres-commerciaux.json data/hotels-commerces-meta.json data/sources/hotels-table.csv data/sources/osm-hotels-commerces-cache.json
+          git commit -m "Hôtels & commerces : mise à jour automatique $(date -u +%Y-%m-%d)"
+          git pull --rebase && git push
