@@ -2,7 +2,9 @@
 
 Web app (PWA) de carte interactive 3D de Maurice : démographie, équipements, commerces, transports, projets immobiliers, terres de l'État, tourisme, loisirs — en couches superposables.
 
-> **Version 0.3** — fond de carte réel (OpenStreetMap) + **couche Population réelle** (recensement 2022). Les autres couches restent **factices**.
+> **Version 0.4** — + **couches Équipements réelles** (OpenStreetMap) et **indice de fiabilité**.
+>
+> Version 0.3 — fond de carte réel (OpenStreetMap) + **couche Population réelle** (recensement 2022). Les autres couches restent **factices**.
 
 ## Couche Population — mise à jour
 - **Source** : Statistics Mauritius (recensements 2000, 2011, 2022) via CityPopulation.de ; contours des villages et villes © OpenStreetMap.
@@ -55,3 +57,21 @@ Ouvrir l'URL dans **Safari** → bouton Partager → **Sur l'écran d'accueil** 
 | Terres de l'État | Ministère du Logement et des Terres (cadastre) — demande officielle | à obtenir |
 | Fréquentation touristique | Statistics Mauritius / Tourism Authority | à vérifier |
 | Prix & transactions foncières, zonage (OPS) | à identifier | manquant |
+
+
+## Couches Équipements & services — mise à jour
+- **Groupes** : Services essentiels · Social & vie de quartier · Écoles & éducation · Parcs, sport & plages · Administration & quotidien · Banques · Équipements projetés.
+- **Source de base** : OpenStreetMap (fiabilité **C**), public et privé (statut déduit des balises et du nom).
+- **Rapprochement officiel** : ajouter une ligne dans `data/sources/infra-verifiees.csv` (`nom,sous_type,lat,lon,statut,fiabilite,source,note`). Le point OSM le plus proche (< 400 m, même sous-type) passe en fiabilité **A** ; s'il n'existe pas, il est ajouté.
+- **Équipements projetés** : `data/sources/equipements-projetes.csv` (annonces publiques, fiabilité **B**, position souvent approximative).
+- **Automatique** : `.github/workflows/update-infrastructures.yml` — le 2 de chaque mois, à la demande, et dès qu'un des deux CSV est modifié.
+- **Contrôle** : `data/sources/infrastructures-table.csv`.
+
+## Indice de fiabilité (toutes les couches)
+| Code | Signification |
+|---|---|
+| A | Vérifiée — source officielle, position contrôlée |
+| B | Officielle — source officielle ou annonce, position approximative |
+| C | OpenStreetMap — communautaire, non vérifiée |
+| D | Estimée — calculée (ex. âge moyen) |
+| F | Fictive — démonstration, à remplacer |

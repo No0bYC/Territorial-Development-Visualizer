@@ -5,7 +5,7 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.3.0',
+  version: '0.4.0',
 
   /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
      Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
@@ -22,16 +22,26 @@ window.TDV = {
   /* Fichiers de données (dossier /data). Remplacer un fichier factice
      par un fichier réel au même format suffit à mettre la carte à jour. */
   dataFiles: {
-    pop: 'population.json', popMeta: 'population-meta.json', hex: 'potentiel-demo.json', infra: 'infrastructures.json', schools: 'ecoles.json', banks: 'banques.json',
+    pop: 'population.json', popMeta: 'population-meta.json', hex: 'potentiel-demo.json', infra: 'infrastructures.json', infraMeta: 'infrastructures-meta.json',
     shops: 'commerces.json', malls: 'centres-commerciaux.json', transport: 'transports.json',
     projects: 'projets.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
-    leisure: 'loisirs.json', labels: 'localites.json'
+    labels: 'localites.json'
   },
 
   /* Une couleur par couche — le reste de l'interface reste noir & blanc */
   colors: {
     pop: '#5B5BF7', infra: '#00A3A3', edu: '#F2B705', mall: '#E83E8C', shop: '#FF7A1A', bank: '#1DB954',
-    trans: '#2F80ED', proj: '#FF2D2D', state: '#8E44FF', tour: '#00B8D9', leis: '#7AC943', pot: '#0B0B0C', base: '#9A9AA0'
+    trans: '#2F80ED', proj: '#FF2D2D', state: '#8E44FF', tour: '#00B8D9', leis: '#7AC943', pot: '#0B0B0C', base: '#9A9AA0',
+    svc: '#00A3A3', soc: '#A0522D', adm: '#64748B', eqp: '#0B0B0C'
+  },
+
+  /* Indice de fiabilité — appliqué à chaque élément de la carte (propriété « f » ou valeur par défaut de la couche) */
+  fiab: {
+    A: { label: 'Vérifiée',           desc: 'Source officielle, position contrôlée' },
+    B: { label: 'Officielle',         desc: 'Source officielle ou annonce publique, position approximative' },
+    C: { label: 'OpenStreetMap',      desc: 'Donnée communautaire, non vérifiée' },
+    D: { label: 'Estimée',            desc: 'Calculée ou déduite à partir d\'autres données' },
+    F: { label: 'Fictive',            desc: 'Donnée de démonstration, à remplacer' }
   },
 
   /* Indicateurs de la couche Population (propriétés du fichier population.json,
@@ -49,29 +59,40 @@ window.TDV = {
 
   /* Couches affichées dans le panneau, dans l'ordre */
   layers: [
-    { id: 'pop',   grp: 'Population', name: 'Population', color: 'pop', on: true, map: ['pop-ext', 'pop-line'], meta: 'Recensement 2022 · données réelles', ui: 'metric',
+    { id: 'pop',   grp: 'Population', name: 'Population', color: 'pop', on: true, fiab: 'B', map: ['pop-ext', 'pop-line'], meta: 'Recensement 2022 · données réelles', ui: 'metric',
       note: "Par village (Village Council Area) et par ville. Emploi et criminalité : pas encore de données publiques à cette échelle." },
-    { id: 'pot',   grp: 'Population', name: 'Indice de potentiel immobilier', color: 'pot', on: false, map: ['pot-fill'], meta: 'Analyse · démo',
+    { id: 'pot',   grp: 'Population', name: 'Indice de potentiel immobilier', color: 'pot', on: false, fiab: 'F', map: ['pot-fill'], meta: 'Analyse · démo',
       ui: 'ramp', ramp: ['#F2F2F2', '#BDBDBD', '#6E6E6E', '#0B0B0C'], rampLabels: ['Faible', 'Fort'],
       note: 'Score composite FICTIF (démo). Méthodologie à définir avant tout calcul.' },
-    { id: 'infra', grp: 'Équipements & services', name: 'Infrastructures publiques', color: 'infra', on: false, map: ['infra-pt'], meta: 'Poste, santé, social, parcs',
-      ui: 'chips', field: 'type', options: [['poste', 'Poste'], ['hopital', 'Santé'], ['social', 'Centres sociaux'], ['parc', 'Parcs']] },
-    { id: 'edu',   grp: 'Équipements & services', name: 'Écoles & éducation', color: 'edu', on: false, map: ['edu-pt'], meta: 'Primaire → supérieur',
-      ui: 'chips', field: 'type', options: [['primaire', 'Primaire'], ['secondaire', 'Secondaire'], ['superieur', 'Supérieur']] },
-    { id: 'bank',  grp: 'Équipements & services', name: 'Banques', color: 'bank', on: false, map: ['bank-pt'], meta: 'Agences & DAB' },
-    { id: 'trans', grp: 'Équipements & services', name: 'Transports', color: 'trans', on: true, map: ['metro-line', 'metro-st', 'bus-st'], meta: 'Metro Express, gares routières',
+    /* Équipements : une couche par groupe, tirée de data/infrastructures.json (champ g), sous-types en filtres (champ s).
+       Un 3e élément « false » dans une option = décochée par défaut. */
+    { id: 'svc',  grp: 'Équipements & services', infra: 'svc', name: 'Services essentiels', color: 'svc', on: true, map: ['svc-pt'], meta: 'Poste, sécurité, santé', fiab: 'C',
+      ui: 'chips', field: 's', options: [['poste', 'Poste'], ['police', 'Police'], ['pompiers', 'Pompiers'], ['hopital', 'Hôpitaux'], ['sante', 'Santé de proximité & cliniques'], ['pharmacie', 'Pharmacies']] },
+    { id: 'soc',  grp: 'Équipements & services', infra: 'soc', name: 'Social & vie de quartier', color: 'soc', on: false, map: ['soc-pt'], meta: 'Centres communautaires, social, bibliothèques', fiab: 'C',
+      ui: 'chips', field: 's', options: [['communautaire', 'Centres communautaires'], ['social', 'Structures sociales'], ['bibliotheque', 'Bibliothèques']] },
+    { id: 'edu',  grp: 'Équipements & services', infra: 'edu', name: 'Écoles & éducation', color: 'edu', on: false, map: ['edu-pt'], meta: 'Public et privé', fiab: 'C',
+      ui: 'chips', field: 's', options: [['prescolaire', 'Préscolaire & crèches'], ['ecole', 'Écoles & collèges'], ['superieur', 'Supérieur']] },
+    { id: 'parc', grp: 'Équipements & services', infra: 'parc', name: 'Parcs, sport & plages', color: 'leis', on: false, map: ['parc-pt'], meta: 'Espaces publics de loisirs', fiab: 'C',
+      ui: 'chips', field: 's', options: [['parc', 'Parcs & jardins'], ['jeux', 'Aires de jeux'], ['sport', 'Complexes & stades'], ['terrain', 'Terrains', false], ['plage', 'Plages']] },
+    { id: 'adm',  grp: 'Équipements & services', infra: 'adm', name: 'Administration & quotidien', color: 'adm', on: false, map: ['adm-pt'], meta: 'Mairies, tribunaux, marchés…', fiab: 'C',
+      ui: 'chips', field: 's', options: [['mairie', 'Mairies & conseils'], ['administration', 'Administrations'], ['tribunal', 'Tribunaux'], ['marche', 'Marchés'], ['cimetiere', 'Cimetières'], ['toilettes', 'Toilettes', false], ['carburant', 'Stations-service', false]] },
+    { id: 'bank', grp: 'Équipements & services', infra: 'bank', name: 'Banques', color: 'bank', on: false, map: ['bank-pt'], meta: 'Agences & distributeurs', fiab: 'C',
+      ui: 'chips', field: 's', options: [['agence', 'Agences'], ['dab', 'Distributeurs']] },
+    { id: 'eqp',  grp: 'Équipements & services', infra: 'projet', name: 'Équipements projetés', color: 'eqp', on: false, map: ['eqp-pt'], meta: 'Annoncés ou en construction', fiab: 'B',
+      ui: 'chips', field: 's', options: [['pompiers', 'Casernes'], ['sante', 'Santé'], ['police', 'Police'], ['poste', 'Poste'], ['communautaire', 'Social']],
+      note: 'Signal avancé pour l\'immobilier. Liste tenue dans data/sources/equipements-projetes.csv.' },
+    { id: 'trans', grp: 'Équipements & services', name: 'Transports', color: 'trans', on: true, fiab: 'F', map: ['metro-line', 'metro-st', 'bus-st'], meta: 'Metro Express, gares routières',
       ui: 'keys', keys: [['fill', 'Metro & stations'], ['ring', 'Gares routières']] },
-    { id: 'mall',  grp: 'Commerce', name: 'Centres commerciaux', color: 'mall', on: false, map: ['mall-ext', 'mall-pt'], meta: 'Volumes 3D' },
-    { id: 'shop',  grp: 'Commerce', name: 'Concentration de commerces', color: 'shop', on: false, map: ['shop-heat'], meta: 'Carte de chaleur',
+    { id: 'mall',  grp: 'Commerce', name: 'Centres commerciaux', color: 'mall', on: false, fiab: 'F', map: ['mall-ext', 'mall-pt'], meta: 'Volumes 3D' },
+    { id: 'shop',  grp: 'Commerce', name: 'Concentration de commerces', color: 'shop', on: false, fiab: 'F', map: ['shop-heat'], meta: 'Carte de chaleur',
       ui: 'ramp', ramp: ['rgba(255,122,26,.1)', '#FFB27A', '#FF7A1A', '#C2410C'], rampLabels: ['Diffus', 'Dense'] },
-    { id: 'proj',  grp: 'Foncier & projets', name: 'Projets des promoteurs', color: 'proj', on: true, map: ['proj-ext', 'proj-pt'], meta: 'Projets fictifs',
+    { id: 'proj',  grp: 'Foncier & projets', name: 'Projets des promoteurs', color: 'proj', on: true, fiab: 'F', map: ['proj-ext', 'proj-pt'], meta: 'Projets fictifs',
       ui: 'chips', field: 'status', targets: ['proj-ext', 'proj-pt'], options: [['Livré', 'Livrés'], ['En cours', 'En cours'], ['Projet', 'À venir']],
       note: 'La liste réelle des projets remplacera ces données.' },
-    { id: 'state', grp: 'Foncier & projets', name: "Terres de l'État", color: 'state', on: false, map: ['state-fill', 'state-line'], meta: 'Dont pas géométriques' },
-    { id: 'tour',  grp: 'Tourisme & loisirs', name: 'Zones touristiques', color: 'tour', on: false, map: ['tour-heat', 'hotel-pt'], meta: 'Fréquentation + hôtels',
+    { id: 'state', grp: 'Foncier & projets', name: "Terres de l'État", color: 'state', on: false, fiab: 'F', map: ['state-fill', 'state-line'], meta: 'Dont pas géométriques' },
+    { id: 'tour',  grp: 'Tourisme & loisirs', name: 'Zones touristiques', color: 'tour', on: false, fiab: 'F', map: ['tour-heat', 'hotel-pt'], meta: 'Fréquentation + hôtels',
       ui: 'ramp', ramp: ['rgba(0,184,217,.1)', '#7FDCEC', '#00B8D9', '#006E82'], rampLabels: ['Faible fréquentation', 'Forte'],
       note: 'Points foncés : hôtels & resorts (taille = étoiles).' },
-    { id: 'leis',  grp: 'Tourisme & loisirs', name: 'Zones de loisirs', color: 'leis', on: false, map: ['leis-fill', 'leis-line'], meta: 'Parcs, plages, golfs' },
     { id: 'terrain', grp: 'Fond de carte', name: 'Relief 3D', color: 'base', on: true, map: [], meta: 'Élévation réelle, exagérée ×1,5' },
     { id: 'base3d', grp: 'Fond de carte', name: 'Bâtiments 3D', color: 'base', on: true, map: ['osm-buildings', 'blocks'], meta: 'OpenStreetMap · zoom rapproché' },
     { id: 'labels', grp: 'Fond de carte', name: 'Noms des localités', color: 'base', on: true, map: [], meta: '' }
