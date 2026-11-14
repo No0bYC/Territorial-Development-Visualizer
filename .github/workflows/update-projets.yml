@@ -1,0 +1,41 @@
+# TDV — Reconstruction de la couche « Projets des promoteurs »
+# Se lance tout seul dès que la liste des projets ou un périmètre est modifié sur GitHub.
+# Manuel : GitHub → Actions → « Mise à jour Projets » → Run workflow
+name: Mise à jour Projets
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'data/sources/projets.csv'
+      - 'data/sources/perimetres/**'
+      - 'scripts/build_projets.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Construire data/projets.json
+        run: python3 scripts/build_projets.py
+      - name: Commiter si changement
+        run: |
+          if git diff --quiet -- data/projets.json data/projets-perimetres.json && [ -z "$(git ls-files --others --exclude-standard data)" ]; then
+            echo "Aucun changement de données."; exit 0
+          fi
+          git config user.name  "tdv-bot"
+          git config user.email "tdv-bot@users.noreply.github.com"
+          git add data/projets.json data/projets-perimetres.json data/projets-meta.json
+          git commit -m "Projets : mise à jour automatique $(date -u +%Y-%m-%d)"
+          git pull --rebase && git push
