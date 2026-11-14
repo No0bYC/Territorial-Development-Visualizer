@@ -75,3 +75,14 @@ Ouvrir l'URL dans **Safari** → bouton Partager → **Sur l'écran d'accueil** 
 | C | OpenStreetMap — communautaire, non vérifiée |
 | D | Estimée — calculée (ex. âge moyen) |
 | F | Fictive — démonstration, à remplacer |
+
+## Projets des promoteurs (v0.5)
+
+- **Liste** : `data/sources/projets.csv` — une ligne par projet. Colonnes clés : `id`, `groupe`, `projet`, `type`, `statut`, `lat`, `lon`, `fiabilite_geo` (A à F).
+  Modifier ou ajouter une ligne directement sur GitHub (crayon ✏️ → Commit) relance la mise à jour.
+- **Périmètres** : un fichier par projet dans `data/sources/perimetres/<id>.geojson` (ex. `ER-02.geojson`, Telfair).
+  Un projet qui a un périmètre est affiché en pointillés + volume translucide ; les autres restent des points.
+- **Construction** : `scripts/build_projets.py` (Python standard) produit `data/projets.json`, `data/projets-perimetres.json` et `data/projets-meta.json`.
+  Workflow GitHub « Mise à jour Projets » : automatique à chaque modification de la liste ou d'un périmètre, ou manuel via Run workflow.
+- **Garde-fous** : arrêt si moins de 10 lignes, identifiant en double ou coordonnées hors de Maurice. Les projets sans coordonnées sont listés dans `projets-meta.json`.
+- **Statuts** ramenés à 3 états (livré / en cours / à venir) ; **catégories** : Smart City & quartiers, résidentiel, commerces & bureaux, équipements & loisirs, foncier.

@@ -93,6 +93,18 @@
     return f;
   };
 
+  /* Filtres des projets promoteurs : statut, catégorie, promoteur */
+  const PJ = CFG.layers.find((l) => l.id === 'proj');
+  const pjSt = new Set(PJ.status.map((o) => o[0])), pjCat = new Set(PJ.cats.map((o) => o[0]));
+  let pjGrp = 'all';
+  const projFilter = () => {
+    const f = ['all', ['in', ['get', 'st'], ['literal', [...pjSt]]], ['in', ['get', 'cat'], ['literal', [...pjCat]]]];
+    if (pjGrp !== 'all') f.push(['in', pjGrp, ['get', 'grp']]);
+    return f;
+  };
+  const projMatch = (p) => pjSt.has(p.st) && pjCat.has(p.cat) && (pjGrp === 'all' || p.grp.includes(pjGrp));
+  const PJ_COL = ['match', ['get', 'st'], 'livre', PJ.status[0][2], 'encours', PJ.status[1][2], PJ.status[2][2]];
+
   /* ---------- Carte ---------- */
   const PAD = () => isMobile() ? { top: 90, bottom: 150, left: 0, right: 0 } : { top: 100, bottom: 20, left: 340, right: 70 };
   const map = new maplibregl.Map({
@@ -112,8 +124,8 @@
     const add = (id, data) => map.addSource(id, { type: 'geojson', data });
     add('hex', D.hex); add('pop', D.pop);
     add('infra', D.infra); add('shop', D.shops); add('mall', D.malls);
-    add('trans', D.transport); add('proj', D.projects); add('state', D.state); add('tour', D.tourism); add('hotel', D.hotels);
-    add('projpt', { type: 'FeatureCollection', features: D.projects.features.map((f) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [f.properties.cx, f.properties.cy] }, properties: f.properties })) });
+    add('trans', D.transport); add('proj', D.projPerim); add('state', D.state); add('tour', D.tourism); add('hotel', D.hotels);
+    add('projpt', D.projects);
     add('mallpt', { type: 'FeatureCollection', features: D.malls.features.map((f) => { const r = f.geometry.coordinates[0]; return { type: 'Feature', geometry: { type: 'Point', coordinates: [(r[0][0] + r[2][0]) / 2, (r[0][1] + r[2][1]) / 2] }, properties: f.properties }; }) });
 
     // motif hachuré pour les terres de l'État
@@ -172,8 +184,10 @@
     A({ id: 'pop-ext', type: 'fill-extrusion', source: 'pop', layout: hidden, paint: { 'fill-extrusion-color': rampExpr(metric), 'fill-extrusion-height': heightExpr(metric), 'fill-extrusion-opacity': .8, 'fill-extrusion-vertical-gradient': true } });
     A({ id: 'pop-line', type: 'line', source: 'pop', layout: hidden, paint: { 'line-color': '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 9, .4, 13, 1.2], 'line-opacity': .9 } });
     A({ id: 'mall-ext', type: 'fill-extrusion', source: 'mall', layout: hidden, paint: { 'fill-extrusion-color': C.mall, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
-    const projColor = ['match', ['get', 'status'], 'Livré', '#FF2D2D', 'En cours', '#FF6B57', '#FFB0A3'];
-    A({ id: 'proj-ext', type: 'fill-extrusion', source: 'proj', paint: { 'fill-extrusion-color': projColor, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
+    // Projets : périmètre tracé = aplat + volume translucide + pointillés
+    A({ id: 'proj-fill', type: 'fill', source: 'proj', filter: projFilter(), paint: { 'fill-color': C.proj, 'fill-opacity': .1 } });
+    A({ id: 'proj-vol', type: 'fill-extrusion', source: 'proj', filter: projFilter(), paint: { 'fill-extrusion-color': C.proj, 'fill-extrusion-height': 60, 'fill-extrusion-opacity': .18 } });
+    A({ id: 'proj-line', type: 'line', source: 'proj', filter: projFilter(), layout: { 'line-join': 'round' }, paint: { 'line-color': C.proj, 'line-width': zw(1.5, 4), 'line-dasharray': [2, 1.2] } });
     // points
     const circ = (id, src, color, r, extra = {}) => A(Object.assign({ id, type: 'circle', source: src, layout: hidden,
       paint: { 'circle-color': color, 'circle-radius': zw(r * .7, r * 1.6), 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5, 'circle-pitch-alignment': 'map' } }, extra));
@@ -191,8 +205,13 @@
     A({ id: 'hotel-pt', type: 'circle', source: 'hotel', layout: hidden, paint: { 'circle-color': '#006E82', 'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, ['-', ['get', 'etoiles'], 1], 14, ['*', ['get', 'etoiles'], 2]], 'circle-stroke-color': '#fff', 'circle-stroke-width': 1.5 } });
     A({ id: 'bus-st', type: 'circle', source: 'trans', filter: ['==', ['get', 'kind'], 'bus'], paint: { 'circle-color': '#fff', 'circle-radius': zw(3, 7), 'circle-stroke-color': C.trans, 'circle-stroke-width': 2 } });
     A({ id: 'metro-st', type: 'circle', source: 'trans', filter: ['==', ['get', 'kind'], 'station'], paint: { 'circle-color': C.trans, 'circle-radius': zw(3.5, 8), 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 } });
-    const fadeOut = ['interpolate', ['linear'], ['zoom'], 10.5, 1, 11.5, 0];
-    A({ id: 'proj-pt', type: 'circle', source: 'projpt', maxzoom: 11.5, paint: { 'circle-color': projColor, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 8.5, 5, 11.5, 9], 'circle-stroke-color': '#0B0B0C', 'circle-stroke-width': 1.5, 'circle-opacity': fadeOut, 'circle-stroke-opacity': fadeOut } });
+    // Projets : point (plein = livré, clair = en cours, blanc = à venir) ; position approximative (F) = plus transparent
+    A({ id: 'proj-pt', type: 'circle', source: 'projpt', filter: projFilter(), paint: { 'circle-color': PJ_COL, 'circle-radius': zw(4.5, 10),
+      'circle-stroke-color': C.proj, 'circle-stroke-width': ['case', ['==', ['get', 'st'], 'projete'], 2.2, 1.2],
+      'circle-opacity': ['case', ['==', ['get', 'f'], 'F'], .6, 1], 'circle-pitch-alignment': 'map' } });
+    // libellés des projets (zoom rapproché)
+    window.__pjMarkers = D.projects.features.map((f) => { const el = document.createElement('div'); el.className = 'tl pj' + (f.properties.per ? ' per' : ''); el.textContent = f.properties.n.replace(/\s*\(.*\)$/, '');
+      return { p: f.properties, el, m: new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, f.properties.decale ? -24 : -10] }).setLngLat(f.geometry.coordinates).addTo(map) }; });
 
 
     buildPanel(); applyAll(); bindClicks();
@@ -200,7 +219,7 @@
   });
   let terrainOn = null;
   function setTerrain(on) { if (on === terrainOn) return; terrainOn = on; try { map.setTerrain(on ? { source: 'dem', exaggeration: CFG.basemap.exaggeration } : null); } catch (e) {} }
-  function updZoomClass() { const z = map.getZoom(), m = $('#map'); m.classList.toggle('z-low', z < 9.6); m.classList.toggle('z-mid', z >= 9.6 && z < 10.6); }
+  function updZoomClass() { const z = map.getZoom(), m = $('#map'); m.classList.toggle('z-low', z < 9.6); m.classList.toggle('z-mid', z >= 9.6 && z < 10.6); m.classList.toggle('z-hi', z >= 13); }
 
   /* ---------- Panneau des couches ---------- */
   function subHTML(l) {
@@ -216,6 +235,14 @@
       const cnt = (v) => l.infra ? D.infra.features.filter((f) => f.properties.g === l.infra && f.properties.s === v).length : null;
       h += `<div class="seg" data-seg="${l.id}">${l.options.map(([v, t, d]) => { const n = cnt(v); return `<button data-v="${v}" class="${d === false ? '' : 'on'}">${t}${n !== null ? ` <small>${n}</small>` : ''}</button>`; }).join('')}</div>`;
       if (l.infra && l.infra !== 'projet') h += `<div class="keys"><span><i style="background:${C[l.color]}"></i>Public</span><span><i style="background:#fff;border:2px solid ${C[l.color]}"></i>Privé</span></div>`;
+    }
+    if (l.ui === 'proj') {
+      const M = D.projMeta || {}, n = (k, v) => D.projects.features.filter((f) => f.properties[k] === v).length;
+      h += `<div class="note" style="margin:0 0 8px">${M.localises || D.projects.features.length} projets placés · ${M.perimetres || 0} périmètre${M.perimetres > 1 ? 's' : ''} tracé${M.perimetres > 1 ? 's' : ''}${M.sans_coordonnees && M.sans_coordonnees.length ? ` · ${M.sans_coordonnees.length} sans coordonnées` : ''}${M.updated ? ' · màj ' + new Date(M.updated).toLocaleDateString('fr-FR') : ''}</div>`;
+      h += `<div class="seg pseg" data-p="st">${l.status.map(([v, t, c]) => `<button data-v="${v}" class="on"><i class="sw2" style="background:${c}"></i>${t} <small>${n('st', v)}</small></button>`).join('')}</div>`;
+      h += `<div class="seg pseg" data-p="cat">${l.cats.map(([v, t]) => `<button data-v="${v}" class="on">${t} <small>${n('cat', v)}</small></button>`).join('')}</div>`;
+      const grps = [...new Set(D.projects.features.flatMap((f) => f.properties.grp.split(/\s*[\/+]\s*/)))].sort();
+      h += `<select class="psel" id="pjgrp"><option value="all">Tous les promoteurs</option>${grps.map((g) => `<option>${g}</option>`).join('')}</select>`;
     }
     if (l.ui === 'ramp') h += `<div class="ramp" style="background:linear-gradient(90deg,${l.ramp.join(',')})"></div><div class="rl"><span>${l.rampLabels[0]}</span><span>${l.rampLabels[1]}</span></div>`;
     if (l.ui === 'keys') h += `<div class="keys">${l.keys.map(([s, t]) => `<span><i style="${s === 'fill' ? `background:${C[l.color]}` : `background:#fff;border:2px solid ${C[l.color]}`}"></i>${t}</span>`).join('')}</div>`;
@@ -238,6 +265,11 @@
     $('#layers').innerHTML = h;
     document.querySelectorAll('.lrow').forEach((b) => (b.onclick = () => toggle(b.dataset.l)));
     document.querySelectorAll('.seg[data-seg]').forEach((s) => s.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) segClick(s.dataset.seg, b.dataset.v, s); }));
+    document.querySelectorAll('.pseg').forEach((s) => s.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return; const S = s.dataset.p === 'st' ? pjSt : pjCat, v = b.dataset.v;
+      S.has(v) ? S.delete(v) : S.add(v); b.classList.toggle('on', S.has(v)); applyProj();
+    }));
+    const sel = $('#pjgrp'); if (sel) sel.onchange = () => { pjGrp = sel.value; applyProj(); };
     document.querySelectorAll('.gseg').forEach((s) => s.addEventListener('click', (e) => {
       const b = e.target.closest('button'); if (!b) return;
       s.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
@@ -246,9 +278,14 @@
     }));
     updRamp();
   }
+  function applyProj() {
+    PJ.map.forEach((x) => map.getLayer(x) && map.setFilter(x, projFilter()));
+    (window.__pjMarkers || []).forEach((k) => (k.el.style.display = PJ.on && projMatch(k.p) ? '' : 'none'));
+  }
   function toggle(id) { const l = CFG.layers.find((x) => x.id === id); l.on = !l.on; $('#ly-' + id).classList.toggle('on', l.on); applyAll(); }
   function applyAll() {
     CFG.layers.forEach((l) => l.map.forEach((x) => map.getLayer(x) && map.setLayoutProperty(x, 'visibility', l.on ? 'visible' : 'none')));
+    applyProj();
     const lab = CFG.layers.find((x) => x.id === 'labels').on;
     $('#map').classList.toggle('hide-labels', !lab);
     baseLabels.forEach((x) => map.getLayer(x) && map.setLayoutProperty(x, 'visibility', lab ? 'visible' : 'none'));
@@ -285,11 +322,29 @@
     const i = $('#info'); i.classList.remove('show'); void i.offsetWidth; i.classList.add('show');
     if (isMobile()) $('#panel').classList.remove('open');
   }
+  const ST_LBL = { livre: 'Livré', encours: 'En cours', projete: 'À venir' };
+  const rs = (n) => n >= 1e9 ? 'Rs ' + (n / 1e9).toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' Md' : 'Rs ' + Math.round(n / 1e6).toLocaleString('fr-FR') + ' M';
+  function showProj(p, perim) {
+    if (!perim && p.per) { const pf = D.projPerim.features.find((f) => f.properties.id === p.id); if (pf) p = pf.properties, perim = true; }
+    const m = [[p.statut, 'Statut'], [p.an || '—', 'Calendrier'], [p.surf || '—', 'Surface annoncée'], [p.bud ? rs(p.bud) : '—', 'Montant publié']];
+    if (perim) m.splice(3, 0, [p.ha_trace + ' ha', 'Surface du périmètre tracé']);
+    if (p.reg) m.push([p.reg, 'Régime']);
+    m.push([p.loc, 'Localité']);
+    let foot = `${p.grp} · ${p.fil} · réf. ${p.id}`;
+    if (p.note) foot += `<br>${p.note}`;
+    if (p.bud_info && p.bud) foot += `<br>Montant : ${p.bud_info}`;
+    if (perim) foot += `<br><b>Périmètre :</b> ${p.methode}${p.per_src ? ' — ' + p.per_src : ''}`;
+    const ann = parseFloat(String(p.surf).replace(',', '.'));
+    if (perim && /ha/.test(p.surf) && ann && Math.abs(p.ha_trace - ann) / ann > .25) foot += `<br><span style="color:#9A3412">⚠︎ Surface tracée (${p.ha_trace} ha) ≠ annoncée (${p.surf}) : périmètre à confirmer avec le promoteur.</span>`;
+    if (p.decale) foot += '<br>Point légèrement décalé pour rester cliquable (même adresse qu\'un autre projet).';
+    if (/^https?:/.test(p.url)) foot += `<br><a href="${p.url}" target="_blank" rel="noopener">Voir la source</a>`; else if (p.url) foot += `<br>Source : ${p.url}`;
+    showInfo(C.proj, 'Projet promoteur · ' + p.type, p.n, m, foot, p.f);
+  }
   $('#ix').onclick = () => $('#info').classList.remove('show');
   function nearestTown(ll) { let b = null, d = 1e9; D.labels.forEach((l) => { const dd = (l.c[0] - ll.lng) ** 2 + (l.c[1] - ll.lat) ** 2; if (dd < d) { d = dd; b = l.name; } }); return 'Secteur ' + b; }
   function bindClicks() {
     const INFRA = CFG.layers.filter((l) => l.infra), INFRA_IDS = INFRA.map((l) => l.map[0]);
-    const order = ['proj-ext', 'proj-pt', 'eqp-pt', ...INFRA_IDS.filter((x) => x !== 'eqp-pt'), 'mall-ext', 'mall-pt', 'hotel-pt', 'metro-st', 'bus-st', 'state-fill', 'pop-ext', 'pot-fill'];
+    const order = ['proj-pt', 'proj-fill', 'eqp-pt', ...INFRA_IDS.filter((x) => x !== 'eqp-pt'), 'mall-ext', 'mall-pt', 'hotel-pt', 'metro-st', 'bus-st', 'state-fill', 'pop-ext', 'pot-fill'];
     const LBL = { poste: 'Bureau de poste', police: 'Police', pompiers: 'Caserne de pompiers', hopital: 'Hôpital', sante: 'Santé de proximité / clinique', pharmacie: 'Pharmacie',
       communautaire: 'Centre communautaire', social: 'Structure sociale', bibliotheque: 'Bibliothèque', prescolaire: 'Préscolaire / crèche', ecole: 'École / collège', superieur: 'Enseignement supérieur',
       parc: 'Parc / jardin', jeux: 'Aire de jeux', sport: 'Complexe sportif / stade', terrain: 'Terrain de sport', plage: 'Plage', mairie: 'Mairie / conseil', administration: 'Administration',
@@ -311,7 +366,7 @@
           : `Source : ${p.src || 'OpenStreetMap'}${p.osm ? ' · réf. OSM ' + p.osm : ''}${D.infraMeta && D.infraMeta.updated ? ' · màj ' + new Date(D.infraMeta.updated).toLocaleDateString('fr-FR') : ''}`;
         showInfo(proj ? '#0B0B0C' : C[lyr.color], (proj ? 'Équipement projeté · ' : lyr.name + ' · ') + (LBL[p.s] || p.s), p.n, m, foot, p.f);
       }
-      else if (id.startsWith('proj')) showInfo(C.proj, 'Projet promoteur · ' + p.type, p.name, [[p.status, 'Statut'], [p.year, 'Livraison'], [p.units ? fmt(p.units) : '—', 'Unités'], [p.ha + ' ha', 'Emprise']], 'Zone : ' + p.zone + ' · donnée fictive', 'F');
+      else if (id.startsWith('proj')) showProj(p, id === 'proj-fill');
       else if (id.startsWith('mall')) showInfo(C.mall, 'Centre commercial', p.name, [[p.boutiques, 'Boutiques'], [p.zone, 'Zone']], '', 'F');
       else if (id === 'hotel-pt') showInfo('#006E82', 'Hôtel & resort', p.name, [[p.etoiles + '★', 'Catégorie'], [p.chambres, 'Chambres'], [p.occ + ' %', "Taux d'occupation"], [p.zone, 'Zone']], '', 'F');
       else if (id === 'metro-st' || id === 'bus-st') showInfo(C.trans, 'Transport', p.name, [[id === 'metro-st' ? 'Metro' : 'Bus', 'Mode']], 'Tracé indicatif, à remplacer par les données officielles', 'F');

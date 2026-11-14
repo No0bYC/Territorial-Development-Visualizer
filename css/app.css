@@ -138,3 +138,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .gfil .seg{margin-bottom:6px}
 .gseg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
 #info .foot a{color:var(--ink);text-decoration:underline}
+
+/* ---------- Projets promoteurs ---------- */
+.tl.pj{display:none;color:#B91C1C;font-size:10.5px;font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+.tl.pj.per{font-family:"Space Grotesk";font-size:12.5px;font-weight:700;color:#FF2D2D}
+.z-hi .tl.pj{display:block}
+.hide-labels .tl.pj{display:none}
+.sw2{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;border:1.5px solid #FF2D2D;vertical-align:0}
+.pseg button.on .sw2{border-color:#fff}
+.psel{width:100%;font:inherit;font-size:12px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);margin-bottom:6px}

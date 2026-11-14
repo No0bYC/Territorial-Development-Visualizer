@@ -1,0 +1,31 @@
+{
+ "updated": "2026-11-14T17:58:12+00:00",
+ "projets": 94,
+ "localises": 89,
+ "perimetres": 1,
+ "sans_coordonnees": [
+  "TER-12",
+  "ALT-12",
+  "ALT-13",
+  "CIE-05",
+  "MIC-03"
+ ],
+ "statuts": {
+  "encours": 42,
+  "livre": 38,
+  "projete": 9
+ },
+ "categories": {
+  "eco": 22,
+  "equip": 15,
+  "foncier": 5,
+  "resid": 36,
+  "smart": 11
+ },
+ "fiabilite": {
+  "B": 2,
+  "C": 8,
+  "D": 49,
+  "F": 30
+ }
+}

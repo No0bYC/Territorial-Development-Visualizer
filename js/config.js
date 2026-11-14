@@ -5,7 +5,7 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.4.0',
+  version: '0.5.0',
 
   /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
      Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
@@ -24,7 +24,7 @@ window.TDV = {
   dataFiles: {
     pop: 'population.json', popMeta: 'population-meta.json', hex: 'potentiel-demo.json', infra: 'infrastructures.json', infraMeta: 'infrastructures-meta.json',
     shops: 'commerces.json', malls: 'centres-commerciaux.json', transport: 'transports.json',
-    projects: 'projets.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
+    projects: 'projets.json', projPerim: 'projets-perimetres.json', projMeta: 'projets-meta.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
     labels: 'localites.json'
   },
 
@@ -86,9 +86,11 @@ window.TDV = {
     { id: 'mall',  grp: 'Commerce', name: 'Centres commerciaux', color: 'mall', on: false, fiab: 'F', map: ['mall-ext', 'mall-pt'], meta: 'Volumes 3D' },
     { id: 'shop',  grp: 'Commerce', name: 'Concentration de commerces', color: 'shop', on: false, fiab: 'F', map: ['shop-heat'], meta: 'Carte de chaleur',
       ui: 'ramp', ramp: ['rgba(255,122,26,.1)', '#FFB27A', '#FF7A1A', '#C2410C'], rampLabels: ['Diffus', 'Dense'] },
-    { id: 'proj',  grp: 'Foncier & projets', name: 'Projets des promoteurs', color: 'proj', on: true, fiab: 'F', map: ['proj-ext', 'proj-pt'], meta: 'Projets fictifs',
-      ui: 'chips', field: 'status', targets: ['proj-ext', 'proj-pt'], options: [['Livré', 'Livrés'], ['En cours', 'En cours'], ['Projet', 'À venir']],
-      note: 'La liste réelle des projets remplacera ces données.' },
+    { id: 'proj',  grp: 'Foncier & projets', name: 'Projets des promoteurs', color: 'proj', on: true, map: ['proj-fill', 'proj-vol', 'proj-line', 'proj-pt'], meta: 'Membres et grands groupes',
+      ui: 'proj',
+      status: [['livre', 'Livrés', '#FF2D2D'], ['encours', 'En cours', '#FF8A7A'], ['projete', 'À venir', '#FFFFFF']],
+      cats: [['smart', 'Smart City & quartiers'], ['resid', 'Résidentiel'], ['eco', 'Commerces & bureaux'], ['equip', 'Équipements & loisirs'], ['foncier', 'Foncier']],
+      note: 'Liste : data/sources/projets.csv · périmètres : data/sources/perimetres/. Pointillés = périmètre tracé ; point seul = position approximative.' },
     { id: 'state', grp: 'Foncier & projets', name: "Terres de l'État", color: 'state', on: false, fiab: 'F', map: ['state-fill', 'state-line'], meta: 'Dont pas géométriques' },
     { id: 'tour',  grp: 'Tourisme & loisirs', name: 'Zones touristiques', color: 'tour', on: false, fiab: 'F', map: ['tour-heat', 'hotel-pt'], meta: 'Fréquentation + hôtels',
       ui: 'ramp', ramp: ['rgba(0,184,217,.1)', '#7FDCEC', '#00B8D9', '#006E82'], rampLabels: ['Faible fréquentation', 'Forte'],
@@ -100,7 +102,7 @@ window.TDV = {
 
   /* Vues rapides : [nom, [lon, lat], zoom, orientation] */
   views: [
-    ['Île entière', [57.555, -20.24], 9.15, -18], ['Nord', [57.59, -20.06], 10.6, 20], ['Port-Louis', [57.50, -20.17], 11.6, -30],
+    ['Île entière', [57.555, -20.24], 9.15, -18], ['Moka · Telfair', [57.5095, -20.2305], 14.1, -12], ['Nord', [57.59, -20.06], 10.6, 20], ['Port-Louis', [57.50, -20.17], 11.6, -30],
     ['Plateau central', [57.49, -20.27], 11, -40], ['Ouest', [57.38, -20.32], 10.8, 60], ['Est', [57.72, -20.20], 10.8, -70],
     ['Sud-Est', [57.68, -20.42], 10.9, 160], ['Sud', [57.45, -20.48], 10.7, 180]
   ]
