@@ -1,39 +1,43 @@
-# TDV — Mise à jour automatique de la couche Population
-# Chaque mois (le 2 à 03:00, heure de Maurice) et à la demande :
-# GitHub → Actions → « Mise à jour Population » → Run workflow
-name: Mise à jour Population
+# TDV — Mise à jour automatique des couches Équipements & services
+# Chaque mois (le 2 à 04:00, heure de Maurice), à la demande,
+# et dès qu'une liste officielle ou projetée est modifiée.
+# GitHub → Actions → « Mise à jour Équipements » → Run workflow
+name: Mise à jour Équipements
 
 on:
   schedule:
-    - cron: '0 23 1 * *'
+    - cron: '0 0 2 * *'
   workflow_dispatch:
+  push:
+    paths:
+      - 'data/sources/infra-verifiees.csv'
+      - 'data/sources/equipements-projetes.csv'
 
 permissions:
   contents: write
 
 concurrency:
-  group: population-update
+  group: data-update
   cancel-in-progress: false
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install "shapely==2.*"
-      - name: Construire data/population.json
-        run: python3 scripts/update_population.py
+      - name: Construire data/infrastructures.json
+        run: python3 scripts/update_infrastructures.py
       - name: Commiter si changement
         run: |
-          if git diff --quiet -- data/population.json && [ -z "$(git status --porcelain data/sources)" ]; then
+          if git diff --quiet -- data/infrastructures.json && [ -z "$(git status --porcelain data/sources)" ]; then
             echo "Aucun changement de données."; exit 0
           fi
           git config user.name  "tdv-bot"
           git config user.email "tdv-bot@users.noreply.github.com"
-          git add data/population.json data/population-meta.json data/sources/population-table.csv
-          git commit -m "Population : mise à jour automatique $(date -u +%Y-%m-%d)"
-          git push
+          git add data/infrastructures.json data/infrastructures-meta.json data/sources/infrastructures-table.csv
+          git commit -m "Équipements : mise à jour automatique $(date -u +%Y-%m-%d)"
+          git pull --rebase && git push
