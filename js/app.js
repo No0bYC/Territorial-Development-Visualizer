@@ -23,15 +23,56 @@
 
   /* ---------- Données ---------- */
   const D = {};
+  const loadFiles = (files) => Promise.all(Object.entries(files).map(async ([k, f]) => {
+    const r = await fetch('/data/' + f); if (!r.ok) throw new Error(f); D[k] = await r.json();
+  }));
+
+  /* ---------- Fond de carte : OpenStreetMap (OpenFreeMap) restylé noir & blanc ----------
+     En cas d'échec (hors-ligne, service indisponible), repli sur le fond de démonstration. */
+  let style = null, BASE = 'osm';
   try {
-    await Promise.all(Object.entries(CFG.dataFiles).map(async ([k, f]) => {
-      const r = await fetch('/data/' + f); if (!r.ok) throw new Error(f); D[k] = await r.json();
-    }));
+    const [st] = await Promise.all([fetchStyle(), loadFiles(CFG.dataFiles)]);
+    style = st;
   } catch (e) {
-    $('#loading').textContent = 'Erreur de chargement : ' + e.message; return;
+    try {
+      if (!D.hex) await loadFiles(CFG.dataFiles);
+      await loadFiles(CFG.demoBaseFiles); BASE = 'demo';
+      style = { version: 8, sources: {}, layers: [{ id: 'bg', type: 'background', paint: { 'background-color': SEA } }] };
+    } catch (e2) { $('#loading').textContent = 'Erreur de chargement : ' + e2.message; return; }
   }
   $('#loading').textContent = '';
   $('#enter').disabled = false;
+
+  async function fetchStyle() {
+    if (location.search.includes('base=demo')) throw new Error('demo');
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch(CFG.basemap.style, { signal: ctrl.signal }); clearTimeout(t);
+    if (!r.ok) throw new Error('style');
+    return restyle(await r.json());
+  }
+  /* Recoloration du style Positron : terre blanche, mer grise, routes noires */
+  function restyle(st) {
+    const P = {
+      background: { 'background-color': '#FAFAF8' },
+      water: { 'fill-color': '#E3E4E6' }, waterway: { 'line-color': '#D3D6DA' },
+      park: { 'fill-color': '#EEF1EC' }, landcover_wood: { 'fill-color': '#ECEFE9' }, landuse_residential: { 'fill-color': '#F2F2F0' },
+      building: { 'fill-color': '#E8E8E9', 'fill-outline-color': '#DADADC' },
+      highway_path: { 'line-color': '#D6D6DA' }, highway_minor: { 'line-color': '#C9C9CE' },
+      highway_major_casing: { 'line-color': '#FFFFFF' }, highway_major_inner: { 'line-color': '#4A4A4F' }, highway_major_subtle: { 'line-color': '#8A8A8F' },
+      highway_motorway_casing: { 'line-color': '#FFFFFF' }, highway_motorway_inner: { 'line-color': '#0B0B0C' }, highway_motorway_subtle: { 'line-color': '#3A3A3D' },
+      highway_motorway_bridge_casing: { 'line-color': '#FFFFFF' }, highway_motorway_bridge_inner: { 'line-color': '#0B0B0C' },
+      tunnel_motorway_inner: { 'line-color': '#55555A' }, railway: { 'line-color': '#9A9AA0' }
+    };
+    st.layers.forEach((l) => {
+      if (P[l.id]) l.paint = Object.assign(l.paint || {}, P[l.id]);
+      if (l.type === 'symbol' && l.paint && 'text-color' in l.paint) {
+        const strong = /label_(city|town)/.test(l.id);
+        Object.assign(l.paint, { 'text-color': strong ? '#0B0B0C' : '#4A4A4F', 'text-halo-color': '#FFFFFF', 'text-halo-width': 1.4 });
+      }
+    });
+    st.layers = st.layers.filter((l) => !/shield|road_shield/.test(l.id));
+    return st;
+  }
 
   /* ---------- Indicateurs population ---------- */
   let metric = 'dens';
@@ -43,18 +84,21 @@
   /* ---------- Carte ---------- */
   const PAD = () => isMobile() ? { top: 90, bottom: 150, left: 0, right: 0 } : { top: 100, bottom: 20, left: 340, right: 70 };
   const map = new maplibregl.Map({
-    container: 'map', attributionControl: false, maxPitch: 75, minZoom: 7.8, maxZoom: 15.5,
+    container: 'map', attributionControl: false, maxPitch: 75, minZoom: 7.8, maxZoom: 17,
     center: [57.555, -20.24], zoom: isMobile() ? 7.9 : 9.2, pitch: 0, bearing: 0,
-    maxBounds: [[56.9, -20.9], [58.2, -19.6]],
-    style: { version: 8, sources: {}, layers: [{ id: 'bg', type: 'background', paint: { 'background-color': SEA } }] }
+    maxBounds: [[56.9, -20.9], [58.2, -19.6]], style
   });
+  map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: BASE === 'osm' ? CFG.basemap.terrainAttribution : 'Fond de démonstration' }), 'bottom-right');
+  // filet de sécurité : si le fond réel ne se charge pas en 15 s, relance sur le fond de démonstration
+  if (BASE === 'osm') setTimeout(() => { if (!ready) location.replace('/?base=demo'); }, 15000);
+  let BEFORE; // les couches de données passent sous les libellés du fond de carte
+  let baseLabels = [];
   map.setPadding(PAD());
   window.addEventListener('resize', () => map.setPadding(PAD()));
 
   map.on('load', () => {
     const add = (id, data) => map.addSource(id, { type: 'geojson', data });
-    add('island', { type: 'Feature', geometry: { type: 'Polygon', coordinates: [D.coast] }, properties: {} });
-    add('relief', D.relief); add('roads', D.roads); add('blocks', D.blocks); add('hex', D.hex);
+    add('hex', D.hex);
     add('infra', D.infra); add('edu', D.schools); add('bank', D.banks); add('shop', D.shops); add('mall', D.malls);
     add('trans', D.transport); add('proj', D.projects); add('state', D.state); add('tour', D.tourism); add('hotel', D.hotels); add('leis', D.leisure);
     add('projpt', { type: 'FeatureCollection', features: D.projects.features.map((f) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [f.properties.cx, f.properties.cy] }, properties: f.properties })) });
@@ -66,26 +110,46 @@
     g.moveTo(0, 16); g.lineTo(16, 0); g.moveTo(-4, 4); g.lineTo(4, -4); g.moveTo(12, 20); g.lineTo(20, 12); g.stroke();
     map.addImage('hatch', g.getImageData(0, 0, 16, 16));
 
-    const A = (l) => map.addLayer(l);
+    BEFORE = BASE === 'osm' ? (map.getStyle().layers.find((l) => l.type === 'symbol') || {}).id : undefined;
+    baseLabels = BASE === 'osm' ? map.getStyle().layers.filter((l) => l.type === 'symbol').map((l) => l.id) : [];
+    const A = (l) => map.addLayer(l, BEFORE);
     const hidden = { visibility: 'none' };
+    if (BASE === 'osm') addOsmExtras(); else addDemoBase();
+    function addOsmExtras() {
+      // relief : ombrage + 3D (tuiles d'élévation AWS / Mapzen, libres)
+      map.addSource('dem', { type: 'raster-dem', tiles: [CFG.basemap.terrain], encoding: 'terrarium', tileSize: 256, maxzoom: 14 });
+      map.addLayer({ id: 'hillshade', type: 'hillshade', source: 'dem', paint: { 'hillshade-exaggeration': .35, 'hillshade-shadow-color': '#8A8A8F', 'hillshade-highlight-color': '#FFFFFF', 'hillshade-accent-color': '#BDBDC2' } }, map.getLayer('waterway') ? 'waterway' : BEFORE);
+      // bâtiments OSM en 3D
+      A({ id: 'osm-buildings', type: 'fill-extrusion', source: 'openmaptiles', 'source-layer': 'building', minzoom: 13.5,
+        paint: { 'fill-extrusion-color': '#E4E4E7', 'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 6], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': ['interpolate', ['linear'], ['zoom'], 13.5, 0, 14.5, .9] } });
+      setTerrain(true);
+      try { map.setSky({ 'sky-color': '#FFFFFF', 'horizon-color': '#F1F1EF', 'fog-color': '#FFFFFF', 'sky-horizon-blend': .6, 'horizon-fog-blend': .7, 'fog-ground-blend': .25 }); } catch (e) {}
+    }
+    function addDemoBase() {
+    add('island', { type: 'Feature', geometry: { type: 'Polygon', coordinates: [D.coast] }, properties: {} });
+    add('relief', D.relief); add('roads', D.roads); add('blocks', D.blocks);
     // fond
     A({ id: 'island-shadow', type: 'line', source: 'island', paint: { 'line-color': '#000', 'line-opacity': .06, 'line-width': 10, 'line-blur': 8 } });
     A({ id: 'island', type: 'fill', source: 'island', paint: { 'fill-color': '#FFFFFF' } });
     A({ id: 'relief', type: 'fill', source: 'relief', paint: { 'fill-color': ['interpolate', ['linear'], ['get', 'lvl'], 1, '#F7F7F7', 3, '#EFEFEF', 5, '#E6E6E6'], 'fill-opacity': .9 } });
     A({ id: 'relief-line', type: 'line', source: 'relief', paint: { 'line-color': '#D9D9DC', 'line-width': .6 } });
     A({ id: 'coast', type: 'line', source: 'island', paint: { 'line-color': '#0B0B0C', 'line-width': 1.3 } });
+    const zw0 = (a, b) => ['interpolate', ['linear'], ['zoom'], 9, a, 14, b];
+    A({ id: 'road-r', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 'r'], minzoom: 10.2, paint: { 'line-color': '#C9C9CC', 'line-width': ['interpolate', ['linear'], ['zoom'], 10.2, .3, 14, 1.4] } });
+    A({ id: 'road-t', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 't'], paint: { 'line-color': '#A9A9AE', 'line-width': zw0(.4, 1.6) } });
+    A({ id: 'road-s', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 's'], paint: { 'line-color': '#4A4A4F', 'line-width': zw0(.8, 3) } });
+    A({ id: 'road-m', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 'm'], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#0B0B0C', 'line-width': zw0(1.6, 5) } });
+    A({ id: 'blocks', type: 'fill-extrusion', source: 'blocks', minzoom: 11, paint: { 'fill-extrusion-color': '#E4E4E7', 'fill-extrusion-height': ['*', ['get', 'h'], 1.6], 'fill-extrusion-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 11.8, .9] } });
+    D.labels.forEach((l) => { const el = document.createElement('div'); el.className = 'tl ' + l.kind; el.textContent = l.name; new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, -4] }).setLngLat(l.c).addTo(map); });
+    updZoomClass(); map.on('zoom', updZoomClass);
+    }
     // aplats d'analyse
     A({ id: 'pot-fill', type: 'fill', source: 'hex', layout: hidden, paint: { 'fill-color': ['interpolate', ['linear'], ['get', 'pot'], 5, '#F2F2F2', 40, '#BDBDBD', 70, '#6E6E6E', 100, '#0B0B0C'], 'fill-opacity': .72 } });
     A({ id: 'state-fill', type: 'fill', source: 'state', layout: hidden, paint: { 'fill-pattern': 'hatch' } });
     A({ id: 'state-line', type: 'line', source: 'state', layout: hidden, paint: { 'line-color': C.state, 'line-width': 1.4, 'line-dasharray': [2, 1.5] } });
     A({ id: 'leis-fill', type: 'fill', source: 'leis', layout: hidden, paint: { 'fill-color': C.leis, 'fill-opacity': .28 } });
     A({ id: 'leis-line', type: 'line', source: 'leis', layout: hidden, paint: { 'line-color': C.leis, 'line-width': 1.4 } });
-    // routes
     const zw = (a, b) => ['interpolate', ['linear'], ['zoom'], 9, a, 14, b];
-    A({ id: 'road-r', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 'r'], minzoom: 10.2, paint: { 'line-color': '#C9C9CC', 'line-width': ['interpolate', ['linear'], ['zoom'], 10.2, .3, 14, 1.4] } });
-    A({ id: 'road-t', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 't'], paint: { 'line-color': '#A9A9AE', 'line-width': zw(.4, 1.6) } });
-    A({ id: 'road-s', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 's'], paint: { 'line-color': '#4A4A4F', 'line-width': zw(.8, 3) } });
-    A({ id: 'road-m', type: 'line', source: 'roads', filter: ['==', ['get', 'c'], 'm'], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#0B0B0C', 'line-width': zw(1.6, 5) } });
     // cartes de chaleur
     const heat = (id, src, stops) => A({ id, type: 'heatmap', source: src, layout: hidden, paint: {
       'heatmap-radius': zw(15, 42), 'heatmap-intensity': zw(.65, 1.45), 'heatmap-opacity': .85,
@@ -95,7 +159,6 @@
     // transport
     A({ id: 'metro-line', type: 'line', source: 'trans', filter: ['==', ['get', 'kind'], 'metro'], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': C.trans, 'line-width': zw(2.5, 6) } });
     // volumes 3D
-    A({ id: 'blocks', type: 'fill-extrusion', source: 'blocks', minzoom: 11, paint: { 'fill-extrusion-color': '#E4E4E7', 'fill-extrusion-height': ['*', ['get', 'h'], 1.6], 'fill-extrusion-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 11.8, .9] } });
     A({ id: 'pop-ext', type: 'fill-extrusion', source: 'hex', layout: hidden, paint: { 'fill-extrusion-color': rampExpr(metric), 'fill-extrusion-height': heightExpr(metric), 'fill-extrusion-opacity': .82, 'fill-extrusion-vertical-gradient': true } });
     A({ id: 'mall-ext', type: 'fill-extrusion', source: 'mall', layout: hidden, paint: { 'fill-extrusion-color': C.mall, 'fill-extrusion-height': ['*', ['get', 'h'], 9], 'fill-extrusion-opacity': .95 } });
     const projColor = ['match', ['get', 'status'], 'Livré', '#FF2D2D', 'En cours', '#FF6B57', '#FFB0A3'];
@@ -113,13 +176,12 @@
     const fadeOut = ['interpolate', ['linear'], ['zoom'], 10.5, 1, 11.5, 0];
     A({ id: 'proj-pt', type: 'circle', source: 'projpt', maxzoom: 11.5, paint: { 'circle-color': projColor, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 8.5, 5, 11.5, 9], 'circle-stroke-color': '#0B0B0C', 'circle-stroke-width': 1.5, 'circle-opacity': fadeOut, 'circle-stroke-opacity': fadeOut } });
 
-    // noms des localités (HTML)
-    D.labels.forEach((l) => { const el = document.createElement('div'); el.className = 'tl ' + l.kind; el.textContent = l.name; new maplibregl.Marker({ element: el, anchor: 'bottom', offset: [0, -4] }).setLngLat(l.c).addTo(map); });
-    updZoomClass(); map.on('zoom', updZoomClass);
 
     buildPanel(); applyAll(); bindClicks();
     ready = true; if (entered) intro();
   });
+  let terrainOn = null;
+  function setTerrain(on) { if (on === terrainOn) return; terrainOn = on; try { map.setTerrain(on ? { source: 'dem', exaggeration: CFG.basemap.exaggeration } : null); } catch (e) {} }
   function updZoomClass() { const z = map.getZoom(), m = $('#map'); m.classList.toggle('z-low', z < 9.6); m.classList.toggle('z-mid', z >= 9.6 && z < 10.6); }
 
   /* ---------- Panneau des couches ---------- */
@@ -153,7 +215,11 @@
   function toggle(id) { const l = CFG.layers.find((x) => x.id === id); l.on = !l.on; $('#ly-' + id).classList.toggle('on', l.on); applyAll(); }
   function applyAll() {
     CFG.layers.forEach((l) => l.map.forEach((x) => map.getLayer(x) && map.setLayoutProperty(x, 'visibility', l.on ? 'visible' : 'none')));
-    $('#map').classList.toggle('hide-labels', !CFG.layers.find((x) => x.id === 'labels').on);
+    const lab = CFG.layers.find((x) => x.id === 'labels').on;
+    $('#map').classList.toggle('hide-labels', !lab);
+    baseLabels.forEach((x) => map.getLayer(x) && map.setLayoutProperty(x, 'visibility', lab ? 'visible' : 'none'));
+    const terr = CFG.layers.find((x) => x.id === 'terrain');
+    if (terr && BASE === 'osm') { setTerrain(terr.on); map.getLayer('hillshade') && map.setLayoutProperty('hillshade', 'visibility', terr.on ? 'visible' : 'none'); }
     const act = CFG.layers.filter((l) => l.on && l.grp !== 'Fond de carte');
     $('#count').textContent = `${act.length} couche${act.length > 1 ? 's' : ''} active${act.length > 1 ? 's' : ''} · superposables`;
     $('#actives').innerHTML = act.length ? act.map((l) => `<span class="apill"><i style="background:${C[l.color]}"></i>${l.name}</span>`).join('') : '<span class="apill">Aucune couche — touchez pour choisir</span>';

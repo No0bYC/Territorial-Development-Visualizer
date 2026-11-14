@@ -4,7 +4,9 @@
 html,body{height:100%;overflow:hidden;background:var(--sea);font-family:Inter,system-ui,sans-serif;color:var(--ink);font-size:14px}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #map{position:absolute;inset:0}
-.maplibregl-ctrl-attrib{display:none}
+.maplibregl-ctrl-attrib{font-size:10px}
+.maplibregl-ctrl-bottom-right{bottom:env(safe-area-inset-bottom)}
+@media (max-width:820px){.maplibregl-ctrl-bottom-right{bottom:calc(134px + env(safe-area-inset-bottom))}}
 
 /* ---------- Splash ---------- */
 #splash{position:fixed;inset:0;z-index:50;background:#fff;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .7s ease, transform .7s ease}

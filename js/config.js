@@ -5,12 +5,23 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.1.0',
+  version: '0.2.0',
+
+  /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
+     Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
+  basemap: {
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    terrain: 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png',
+    terrainAttribution: 'Relief : Mapzen / AWS Terrain Tiles',
+    exaggeration: 1.5
+  },
+  /* Fond de démonstration utilisé seulement si le fond réel ne charge pas */
+  demoBaseFiles: { coast: 'coast.json', relief: 'relief.json', roads: 'roads.json', blocks: 'blocks.json' },
+
 
   /* Fichiers de données (dossier /data). Remplacer un fichier factice
      par un fichier réel au même format suffit à mettre la carte à jour. */
   dataFiles: {
-    coast: 'coast.json', relief: 'relief.json', roads: 'roads.json', blocks: 'blocks.json',
     hex: 'population.json', infra: 'infrastructures.json', schools: 'ecoles.json', banks: 'banques.json',
     shops: 'commerces.json', malls: 'centres-commerciaux.json', transport: 'transports.json',
     projects: 'projets.json', state: 'terres-etat.json', tourism: 'tourisme.json', hotels: 'hotels.json',
@@ -57,7 +68,8 @@ window.TDV = {
       ui: 'ramp', ramp: ['rgba(0,184,217,.1)', '#7FDCEC', '#00B8D9', '#006E82'], rampLabels: ['Faible fréquentation', 'Forte'],
       note: 'Points foncés : hôtels & resorts (taille = étoiles).' },
     { id: 'leis',  grp: 'Tourisme & loisirs', name: 'Zones de loisirs', color: 'leis', on: false, map: ['leis-fill', 'leis-line'], meta: 'Parcs, plages, golfs' },
-    { id: 'base3d', grp: 'Fond de carte', name: 'Bâti (aperçu 3D)', color: 'base', on: true, map: ['blocks'], meta: 'Visible en zoom rapproché' },
+    { id: 'terrain', grp: 'Fond de carte', name: 'Relief 3D', color: 'base', on: true, map: [], meta: 'Élévation réelle, exagérée ×1,5' },
+    { id: 'base3d', grp: 'Fond de carte', name: 'Bâtiments 3D', color: 'base', on: true, map: ['osm-buildings', 'blocks'], meta: 'OpenStreetMap · zoom rapproché' },
     { id: 'labels', grp: 'Fond de carte', name: 'Noms des localités', color: 'base', on: true, map: [], meta: '' }
   ],
 

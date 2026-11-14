@@ -2,7 +2,13 @@
 
 Web app (PWA) de carte interactive 3D de Maurice : démographie, équipements, commerces, transports, projets immobiliers, terres de l'État, tourisme, loisirs — en couches superposables.
 
-> **Version 0.1 — toutes les données sont factices** (sauf le contour de l'île, Natural Earth). Ne pas utiliser pour une analyse.
+> **Version 0.2** — fond de carte réel (OpenStreetMap), **couches de données encore factices**. Ne pas utiliser pour une analyse.
+
+## Fond de carte
+- **Rues, bâtiments, noms de lieux** : OpenStreetMap via [OpenFreeMap](https://openfreemap.org) (gratuit, sans clé ni limite ; style Positron recoloré noir & blanc dans `js/app.js` → `restyle`). Attribution OpenStreetMap obligatoire, affichée en bas à droite.
+- **Relief 3D + ombrage** : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé.
+- **Secours** : si le fond réel ne charge pas, l'app bascule sur le fond de démonstration (`/?base=demo`).
+- Réglages (URL du style, exagération du relief) : `js/config.js` → `basemap`.
 
 ## Structure
 
