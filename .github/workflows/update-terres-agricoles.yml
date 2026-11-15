@@ -1,0 +1,38 @@
+# TDV — Couche « Usage agricole observé » + croisement avec les projets
+# Lancement manuel uniquement : la source satellite est figée (WorldCover 2021).
+# GitHub → Actions → « Mise à jour Terres agricoles » → Run workflow  (≈ 3 à 8 min)
+name: Mise à jour Terres agricoles
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installer les bibliothèques géographiques
+        run: pip install "rasterio>=1.4,<2" "shapely>=2.0,<3" "pyproj>=3.6,<4" numpy
+      - name: Construire data/terres-agricoles.json
+        run: python3 scripts/build_terres_agricoles.py
+      - name: Recalculer le drapeau sur_terre_agricole des projets
+        run: python3 scripts/build_projets.py
+      - name: Commiter si changement
+        run: |
+          git config user.name  "tdv-bot"
+          git config user.email "tdv-bot@users.noreply.github.com"
+          git add data/terres-agricoles.json data/terres-agricoles-meta.json data/projets.json data/projets-perimetres.json data/projets-meta.json
+          if git diff --cached --quiet; then echo "Aucun changement."; exit 0; fi
+          git commit -m "Terres agricoles : mise à jour $(date -u +%Y-%m-%d)"
+          git pull --rebase && git push
