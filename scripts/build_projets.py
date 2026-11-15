@@ -57,6 +57,53 @@ def num(x):
         return None
 
 
+AGRI = os.path.join(OUT, 'terres-agricoles.json')
+RAYON_M = 500
+
+
+def croiser_terres_agricoles(pts, polys):
+    """Drapeau sur_terre_agricole : oui (le point est sur une terre agricole observée), proche (à moins de 500 m), non.
+    Projets à périmètre tracé (ex. Telfair) : le périmètre lui-même n'est pas qualifié ; on mesure les terres agricoles
+    observées dans un anneau de 500 m autour (« proche » si au moins 1 ha). Positions D ou F : non concluant.
+    Nécessite shapely et data/terres-agricoles.json ; sinon, le drapeau est simplement absent."""
+    if not os.path.exists(AGRI):
+        return None
+    try:
+        import shapely
+        from shapely.geometry import shape, Point
+        from shapely.strtree import STRtree
+    except ImportError:
+        print('shapely absent : croisement avec les terres agricoles ignoré', file=sys.stderr); return None
+    K = math.cos(math.radians(-20.25))
+    to_m = lambda xy: xy * [111320 * K, 110600]          # équirectangulaire local : < 1 % d'erreur sur 500 m
+    geoms = [shapely.transform(shape(f['geometry']), to_m) for f in json.load(open(AGRI, encoding='utf-8'))['features']]
+    tree = STRtree(geoms)
+    per = {f['properties']['id']: shapely.transform(shape(f['geometry']), to_m) for f in polys}
+    stats = {}
+    for f in pts:
+        p = f['properties']
+        if p['id'] in per:
+            zone = per[p['id']]; ring = zone.buffer(RAYON_M).difference(zone)
+            ha = sum(geoms[i].intersection(ring).area for i in tree.query(ring)) / 1e4
+            flag, extra = ('proche' if ha >= 1 else 'non'), {'agri_ha_500m': round(ha)}
+        else:
+            pt = Point(to_m(shapely.get_coordinates(Point(f['geometry']['coordinates'])))[0])
+            if any(geoms[i].covers(pt) for i in tree.query(pt)):
+                flag, extra = 'oui', {'agri_dist_m': 0}
+            else:
+                near = tree.query(pt.buffer(RAYON_M))
+                d = min((geoms[i].distance(pt) for i in near), default=None)
+                flag, extra = ('proche', {'agri_dist_m': round(d)}) if d is not None and d <= RAYON_M else ('non', {})
+        p['sur_terre_agricole'] = flag; p.update(extra)
+        p['agri_conclusif'] = p['f'] not in ('D', 'F')
+        k = flag if p['agri_conclusif'] else 'non concluant'
+        stats[k] = stats.get(k, 0) + 1
+    for f in polys:  # le polygone reprend le drapeau de son point
+        q = next(x['properties'] for x in pts if x['properties']['id'] == f['properties']['id'])
+        f['properties'].update({k: q[k] for k in ('sur_terre_agricole', 'agri_conclusif', 'agri_ha_500m') if k in q})
+    return stats
+
+
 def area_ha(ring):
     k = math.cos(math.radians(sum(p[1] for p in ring) / len(ring)))
     xs = [p[0] * 111320 * k for p in ring]; ys = [p[1] * 110600 for p in ring]
@@ -116,12 +163,16 @@ def main():
             lon += 0.0004 * math.cos(a); lat += 0.0004 * math.sin(a); p['decale'] = 1
         pts.append({'type': 'Feature', 'geometry': {'type': 'Point', 'coordinates': [round(lon, 6), round(lat, 6)]}, 'properties': p})
 
+    agri = croiser_terres_agricoles(pts, polys)
+
     w = lambda name, obj: json.dump(obj, open(os.path.join(OUT, name), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     w('projets.json', {'type': 'FeatureCollection', 'features': pts})
     w('projets-perimetres.json', {'type': 'FeatureCollection', 'features': polys})
     cnt = lambda k: {v: sum(1 for f in pts if f['properties'][k] == v) for v in sorted({f['properties'][k] for f in pts})}
     meta = {'updated': datetime.now(timezone.utc).isoformat(timespec='seconds'), 'projets': len(rows), 'localises': len(pts),
             'perimetres': len(polys), 'sans_coordonnees': sans, 'statuts': cnt('st'), 'categories': cnt('cat'), 'fiabilite': cnt('f')}
+    if agri is not None:
+        meta['terres_agricoles'] = agri
     json.dump(meta, open(os.path.join(OUT, 'projets-meta.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(json.dumps(meta, ensure_ascii=False, indent=1))
 

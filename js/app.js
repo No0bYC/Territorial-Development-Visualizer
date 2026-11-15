@@ -132,6 +132,8 @@
     add('hex', D.hex); add('pop', D.pop);
     add('infra', D.infra); add('shop', D.shops); add('mall', D.malls);
     add('trans', D.transport); add('proj', D.projPerim); add('state', D.state); add('hotel', D.hotels);
+    // Usage agricole : source vide, remplie au premier affichage (n'alourdit pas le chargement initial)
+    map.addSource('agri', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, attribution: 'Usage agricole : ESA WorldCover 2021 (CC BY 4.0) · © OpenStreetMap (ODbL)' });
     add('projpt', D.projects);
     add('mallpt', { type: 'FeatureCollection', features: D.malls.features.map((f) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: f.properties.cx !== undefined ? [f.properties.cx, f.properties.cy] : f.geometry.type === 'Point' ? f.geometry.coordinates : f.geometry.coordinates[0][0] }, properties: f.properties })) });
 
@@ -176,6 +178,8 @@
     }
     // aplats d'analyse
     A({ id: 'pot-fill', type: 'fill', source: 'hex', layout: hidden, paint: { 'fill-color': ['interpolate', ['linear'], ['get', 'pot'], 5, '#F2F2F2', 40, '#BDBDBD', 70, '#6E6E6E', 100, '#0B0B0C'], 'fill-opacity': .72 } });
+    A({ id: 'agri-fill', type: 'fill', source: 'agri', layout: hidden, paint: { 'fill-color': C.agri, 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 9, .45, 15, .3] } });
+    A({ id: 'agri-line', type: 'line', source: 'agri', layout: hidden, minzoom: 12, paint: { 'line-color': C.agri, 'line-width': .8, 'line-opacity': .7 } });
     A({ id: 'state-fill', type: 'fill', source: 'state', layout: hidden, paint: { 'fill-pattern': 'hatch' } });
     A({ id: 'state-line', type: 'line', source: 'state', layout: hidden, paint: { 'line-color': C.state, 'line-width': 1.4, 'line-dasharray': [2, 1.5] } });
     const zw = (a, b) => ['interpolate', ['linear'], ['zoom'], 9, a, 14, b];
@@ -315,7 +319,20 @@
     PJ.map.forEach((x) => map.getLayer(x) && map.setFilter(x, projFilter()));
     (window.__pjMarkers || []).forEach((k) => (k.el.style.display = PJ.on && projMatch(k.p) ? '' : 'none'));
   }
-  function toggle(id) { const l = CFG.layers.find((x) => x.id === id); l.on = !l.on; $('#ly-' + id).classList.toggle('on', l.on); applyAll(); }
+  function toggle(id) {
+    const l = CFG.layers.find((x) => x.id === id); l.on = !l.on; $('#ly-' + id).classList.toggle('on', l.on);
+    if (l.on && l.lazy && !l._loaded) loadLazy(l);
+    applyAll();
+  }
+  async function loadLazy(l) {
+    const row = $('#ly-' + l.id), m = row && row.querySelector('.lmeta'), old = m ? m.textContent : '';
+    if (m) m.textContent = 'Chargement…';
+    try {
+      const r = await fetch('/data/' + l.lazy); if (!r.ok) throw new Error(r.status);
+      const d = await r.json(); map.getSource(l.id).setData(d); l._loaded = true;
+      if (m) m.textContent = `${old} · ${d.features.length} zones`;
+    } catch (e) { if (m) m.textContent = 'Données indisponibles (lancer la mise à jour « Terres agricoles »)'; }
+  }
   function applyAll() {
     CFG.layers.forEach((l) => l.map.forEach((x) => map.getLayer(x) && map.setLayoutProperty(x, 'visibility', l.on ? 'visible' : 'none')));
     applyProj();
@@ -363,7 +380,13 @@
     if (perim) m.splice(3, 0, [p.ha_trace + ' ha', 'Surface du périmètre tracé']);
     if (p.reg) m.push([p.reg, 'Régime']);
     m.push([p.loc, 'Localité']);
+    if (p.sur_terre_agricole) {
+      const s = p.sur_terre_agricole, lbl = s === 'oui' ? 'Oui' : s === 'proche' ? (p.agri_ha_500m !== undefined ? `Proche (${p.agri_ha_500m} ha à < 500 m)` : `Proche (${p.agri_dist_m} m)`) : 'Non';
+      m.push([p.agri_conclusif === false ? lbl + ' · non concluant' : lbl, 'Terre agricole (usage observé)']);
+    }
     let foot = `${p.grp} · ${p.fil} · réf. ${p.id}`;
+    if (p.sur_terre_agricole && p.agri_conclusif === false) foot += '<br>Croisement agricole non concluant : position du projet approximative (fiabilité ' + p.f + ').';
+    if (p.agri_ha_500m !== undefined) foot += '<br>Terres agricoles observées dans un rayon de 500 m autour du périmètre (le périmètre lui-même n\'est pas qualifié).';
     if (p.note) foot += `<br>${p.note}`;
     if (p.bud_info && p.bud) foot += `<br>Montant : ${p.bud_info}`;
     if (perim) foot += `<br><b>Périmètre :</b> ${p.methode}${p.per_src ? ' — ' + p.per_src : ''}`;
@@ -372,6 +395,11 @@
     if (p.decale) foot += '<br>Point légèrement décalé pour rester cliquable (même adresse qu\'un autre projet).';
     if (/^https?:/.test(p.url)) foot += `<br><a href="${p.url}" target="_blank" rel="noopener">Voir la source</a>`; else if (p.url) foot += `<br>Source : ${p.url}`;
     showInfo(C.proj, 'Projet promoteur · ' + p.type, p.n, m, foot, p.f);
+  }
+  function showAgri(p) {
+    showInfo(C.agri, 'Usage agricole observé', 'Terre cultivée (usage observé)',
+      [[p.source === 'ESA+OSM' ? 'Satellite + OSM' : p.source === 'ESA' ? 'Satellite' : 'OSM', 'Source'], [fmt(p.surface_ha) + ' ha', 'Surface de la zone'], [p.date_source, 'Date des données']],
+      'Usage agricole observé (satellite 2021 / OSM). N\'indique pas le statut juridique. Aucun permis de conversion délivré depuis juin 2025 selon le ministre de l\'Agro-industrie (Parlement, déc. 2025).<br>ESA WorldCover 2021 (CC BY 4.0) · © OpenStreetMap (ODbL)', p.fiabilite || 'C');
   }
   const TAILLE = { regional: 'Régional', quartier: 'De quartier', proximite: 'De proximité' };
   const STAT = { existant: 'Ouvert', projete: 'Projet annoncé', extension: 'Extension annoncée' };
@@ -397,7 +425,7 @@
   function nearestTown(ll) { let b = null, d = 1e9; D.labels.forEach((l) => { const dd = (l.c[0] - ll.lng) ** 2 + (l.c[1] - ll.lat) ** 2; if (dd < d) { d = dd; b = l.name; } }); return 'Secteur ' + b; }
   function bindClicks() {
     const INFRA = CFG.layers.filter((l) => l.infra), INFRA_IDS = INFRA.map((l) => l.map[0]);
-    const order = ['proj-pt', 'proj-fill', 'eqp-pt', ...INFRA_IDS.filter((x) => x !== 'eqp-pt'), 'mall-ext', 'mall-pt', 'hotel-pt', 'metro-st', 'bus-st', 'state-fill', 'pop-ext', 'pot-fill'];
+    const order = ['proj-pt', 'proj-fill', 'eqp-pt', ...INFRA_IDS.filter((x) => x !== 'eqp-pt'), 'mall-ext', 'mall-pt', 'hotel-pt', 'metro-st', 'bus-st', 'state-fill', 'agri-fill', 'pop-ext', 'pot-fill'];
     const LBL = { poste: 'Bureau de poste', police: 'Police', pompiers: 'Caserne de pompiers', hopital: 'Hôpital', sante: 'Santé de proximité / clinique', pharmacie: 'Pharmacie',
       communautaire: 'Centre communautaire', social: 'Structure sociale', bibliotheque: 'Bibliothèque', prescolaire: 'Préscolaire / crèche', ecole: 'École / collège', superieur: 'Enseignement supérieur',
       parc: 'Parc / jardin', jeux: 'Aire de jeux', sport: 'Complexe sportif / stade', terrain: 'Terrain de sport', plage: 'Plage', mairie: 'Mairie / conseil', administration: 'Administration',
@@ -420,6 +448,7 @@
         showInfo(proj ? '#0B0B0C' : C[lyr.color], (proj ? 'Équipement projeté · ' : lyr.name + ' · ') + (LBL[p.s] || p.s), p.n, m, foot, p.f);
       }
       else if (id.startsWith('proj')) showProj(p, id === 'proj-fill');
+      else if (id === 'agri-fill') showAgri(p);
       else if (id.startsWith('mall')) showMall(p);
       else if (id === 'hotel-pt') showHotel(p);
       else if (id === 'metro-st' || id === 'bus-st') showInfo(C.trans, 'Transport', p.name, [[id === 'metro-st' ? 'Metro' : 'Bus', 'Mode']], 'Tracé indicatif, à remplacer par les données officielles', 'F');

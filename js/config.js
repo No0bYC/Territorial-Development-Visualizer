@@ -5,7 +5,7 @@
    ou pointer vers un nouveau fichier de données.
    ========================================================= */
 window.TDV = {
-  version: '0.6.0',
+  version: '0.7.0',
 
   /* Fond de carte réel : OpenStreetMap via OpenFreeMap (gratuit, sans clé, attribution obligatoire)
      Relief : tuiles d'élévation AWS Open Data (Mapzen Terrarium), gratuites, sans clé */
@@ -31,7 +31,7 @@ window.TDV = {
   /* Une couleur par couche — le reste de l'interface reste noir & blanc */
   colors: {
     pop: '#5B5BF7', infra: '#00A3A3', edu: '#F2B705', mall: '#E83E8C', shop: '#FF7A1A', bank: '#1DB954',
-    trans: '#2F80ED', proj: '#FF2D2D', state: '#8E44FF', tour: '#00B8D9', leis: '#7AC943', pot: '#0B0B0C', base: '#9A9AA0',
+    trans: '#2F80ED', proj: '#FF2D2D', state: '#8E44FF', agri: '#3E9B4F', tour: '#00B8D9', leis: '#7AC943', pot: '#0B0B0C', base: '#9A9AA0',
     svc: '#00A3A3', soc: '#A0522D', adm: '#64748B', eqp: '#0B0B0C'
   },
 
@@ -93,6 +93,9 @@ window.TDV = {
       status: [['livre', 'Livrés', '#FF2D2D'], ['encours', 'En cours', '#FF8A7A'], ['projete', 'À venir', '#FFFFFF']],
       cats: [['smart', 'Smart City & quartiers'], ['resid', 'Résidentiel'], ['eco', 'Commerces & bureaux'], ['equip', 'Équipements & loisirs'], ['foncier', 'Foncier']],
       note: 'Liste : data/sources/projets.csv · périmètres : data/sources/perimetres/. Pointillés = périmètre tracé ; point seul = position approximative.' },
+    { id: 'agri', grp: 'Foncier & projets', name: 'Usage agricole observé', color: 'agri', on: false, fiab: 'C', map: ['agri-fill', 'agri-line'],
+      lazy: 'terres-agricoles.json', meta: 'Satellite 2021 + OpenStreetMap · pas le statut juridique', ui: 'keys', keys: [['fill', 'Culture observée (canne, vergers, maraîchage…)']],
+      note: 'Usage observé ≠ zonage légal (Policy A1 des Outline Planning Schemes). Aucun permis de conversion délivré depuis juin 2025 selon le ministre de l\'Agro-industrie (Parlement, déc. 2025). Sources : ESA WorldCover 2021 (CC BY 4.0) et © OpenStreetMap (ODbL). Chargée à la demande (≈ 0,6 Mo transférés).' },
     { id: 'state', grp: 'Foncier & projets', name: "Terres de l'État", color: 'state', on: false, fiab: 'F', map: ['state-fill', 'state-line'], meta: 'Dont pas géométriques' },
     { id: 'hotel', grp: 'Tourisme & loisirs', name: 'Hôtels & hébergements', color: 'tour', on: false, map: ['hotel-pt'], meta: 'Hôtels, résidences, maisons d\'hôtes',
       ui: 'hotel', kinds: [['hotel', 'Hôtels'], ['residence', 'Résidences touristiques', false], ['pension', "Maisons d'hôtes", false]],

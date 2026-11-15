@@ -96,3 +96,8 @@ Ouvrir l'URL dans **Safari** → bouton Partager → **Sur l'écran d'accueil** 
 - **Sorties** : `data/hotels.json`, `data/centres-commerciaux.json`, `data/hotels-commerces-meta.json`, table de contrôle `data/sources/hotels-table.csv`.
 - **Workflow** « Mise à jour Hôtels & Commerces » : mensuel (le 3), manuel, ou à chaque modification d'une liste.
 - **Densité d'hébergement touristique** : calculée dans l'application à partir des hébergements (indicateur indirect, fiabilité D). L'ancien fichier `tourisme.json` (fictif) n'est plus utilisé.
+
+## Usage agricole observé (v0.7)
+Couche masquée par défaut, chargée à la demande, fiabilité C. Détails, méthode et limites : `docs/couche-terres-agricoles.md`.
+Script `scripts/build_terres_agricoles.py` ; workflow manuel « Mise à jour Terres agricoles ». Le drapeau `sur_terre_agricole`
+des projets est calculé par `scripts/build_projets.py` quand `data/terres-agricoles.json` existe.
