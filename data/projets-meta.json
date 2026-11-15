@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14T17:58:12+00:00",
+ "updated": "2026-11-15T16:30:50+00:00",
  "projets": 94,
  "localises": 89,
  "perimetres": 1,
@@ -27,5 +27,10 @@
   "C": 8,
   "D": 49,
   "F": 30
+ },
+ "terres_agricoles": {
+  "non concluant": 79,
+  "proche": 7,
+  "non": 3
  }
 }

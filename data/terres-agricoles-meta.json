@@ -1,0 +1,29 @@
+{
+ "updated": "2026-11-15T16:30:50+00:00",
+ "sources": {
+  "esa_worldcover": "v200, 2021, tuile S21E057, classe 40 (CC BY 4.0)",
+  "osm": "extraction du 2026-11-15 (ODbL)"
+ },
+ "parametres": {
+  "surface_min_ha": 1,
+  "simplification_m": 20,
+  "cadre": [
+   57.28,
+   -20.56,
+   57.82,
+   -19.95
+  ]
+ },
+ "polygones": 3419,
+ "poids_mo": 3.84,
+ "surface_ha": {
+  "ESA": 3656,
+  "OSM": 37715,
+  "ESA+OSM": 32608
+ },
+ "surface_totale_ha": 73979,
+ "osm_polygones_agricoles": 3759,
+ "osm_polygones_batis": 991,
+ "osm_seul_part": 51.0,
+ "duree_s": 41
+}
